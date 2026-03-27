@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L03 — Fourier Transforms | MCE 312</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html" class="logo-badge">
+        <div class="logo-icon">〜</div>
+        <div class="logo-text">
+          <span class="course">MCE 312</span>
+          <span class="title">Signals &amp; Systems</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section-label">Modules</div>
+      <a href="l01-intro.html" class="nav-item"><span class="nav-icon">📡</span> L01 — Intro to Signals</a>
+      <a href="l02-sampling.html" class="nav-item"><span class="nav-icon">🔢</span> L02 — Sampling &amp; Quantisation</a>
+      <a href="l03-fourier.html" class="nav-item active"><span class="nav-icon">🌊</span> L03 — Fourier Transforms</a>
+      <div class="nav-section-label">Tools</div>
+      <a href="formulas.html" class="nav-item"><span class="nav-icon">📐</span> Formula Sheet <span class="nav-badge">Quick</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>FUTMINNA · Dept of Mechatronics Engineering<br/><span>Engr. Dr. J. A. Bala</span> · 300 Level</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle">☰</button>
+        <nav class="breadcrumb">
+          <a href="index.html">Dashboard</a>
+          <span class="sep">/</span>
+          <span class="current">L03 — Fourier Transforms</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill"><span class="dot"></span>Module 3 of 3</div>
+      </div>
+    </div>
+
+    <div class="page-content fade-in">
+
+      <div class="page-hero">
+        <div class="hero-tag">🌊 Module 03</div>
+        <h1>Fourier Transforms</h1>
+        <p class="subtitle">Transforming signals from the time domain into the frequency domain — the mathematical language of signal processing. Covers both the Continuous Fourier Transform (CFT) and the Discrete Fourier Transform (DFT).</p>
+        <div class="hero-meta">
+          <div class="meta-chip"><span class="icon">📡</span> Frequency Domain</div>
+          <div class="meta-chip"><span class="icon">🔢</span> CFT + DFT</div>
+          <div class="meta-chip"><span class="icon">🧪</span> 10-Q Quiz Below</div>
+        </div>
+      </div>
+
+      <!-- ── 1. Motivation ────────────────────────────── -->
+      <div class="section-heading">
+        <h2>1. Why Fourier Transforms?</h2>
+        <span class="tag">Motivation</span>
+      </div>
+
+      <div class="card">
+        <h3>From Time Domain to Frequency Domain</h3>
+        <p>The <strong>Fourier Series</strong> can represent any <em>periodic</em> signal as a sum of sinusoids (complex exponentials). But many real-world signals — a single pulse, a transient sound, a noise burst — are <em>aperiodic</em> (non-periodic). The Fourier Transform extends the Fourier Series to handle aperiodic signals by letting the period T → ∞.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card accent-teal">
+          <h3>What the FT Reveals</h3>
+          <ul>
+            <li>The <strong>frequency content</strong> (spectrum) of a signal</li>
+            <li>Which frequencies carry the most energy</li>
+            <li>How to design filters that pass/block specific frequencies</li>
+            <li>The bandwidth requirements for transmission</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Time ↔ Frequency Duality</h3>
+          <div class="diagram-container" style="padding:14px;">
+            <svg viewBox="0 0 300 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <marker id="a1" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 z" fill="#40916C"/>
+                </marker>
+                <marker id="a2" markerWidth="6" markerHeight="6" refX="1" refY="3" orient="auto">
+                  <path d="M6,0 L6,6 L0,3 z" fill="#D4A843"/>
+                </marker>
+              </defs>
+              <rect x="10" y="30" width="100" height="40" rx="8" fill="rgba(45,106,79,0.15)" stroke="#40916C" stroke-width="1.5"/>
+              <text x="60" y="50" font-size="11" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">x(t)</text>
+              <text x="60" y="63" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">Time Domain</text>
+              <line x1="115" y1="45" x2="185" y2="45" stroke="#40916C" stroke-width="1.5" marker-end="url(#a1)"/>
+              <text x="150" y="40" font-size="8" fill="#40916C" font-family="Space Mono" text-anchor="middle">ℱ{·}</text>
+              <line x1="185" y1="55" x2="115" y2="55" stroke="#D4A843" stroke-width="1.5" marker-end="url(#a2)"/>
+              <text x="150" y="68" font-size="8" fill="#D4A843" font-family="Space Mono" text-anchor="middle">ℱ⁻¹{·}</text>
+              <rect x="190" y="30" width="100" height="40" rx="8" fill="rgba(212,168,67,0.1)" stroke="#D4A843" stroke-width="1.5"/>
+              <text x="240" y="50" font-size="11" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">X(ω)</text>
+              <text x="240" y="63" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">Freq Domain</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 2. Continuous Fourier Transform ───────────── -->
+      <div class="section-heading">
+        <h2>2. Continuous Fourier Transform (CFT)</h2>
+        <span class="tag">Core Formula</span>
+      </div>
+
+      <div class="card accent-gold">
+        <h3>⭐ The Fourier Transform Pair</h3>
+        <p>The Fourier Transform decomposes a time-domain signal x(t) into its frequency components X(ω):</p>
+        <div class="math-block" data-label="Forward FT — Analysis">
+X(ω) = ℱ{x(t)} = ∫₋∞^∞ x(t) · e^(−jωt) dt
+
+Where: ω = 2πf (angular frequency, rad/s)
+       j = √(−1) (imaginary unit)
+        </div>
+        <div class="math-block" data-label="Inverse FT — Synthesis">
+x(t) = ℱ⁻¹{X(ω)} = (1/2π) ∫₋∞^∞ X(ω) · e^(jωt) dω
+        </div>
+        <p style="margin-top:12px; font-size:0.9rem; color:var(--text-secondary);">X(ω) is generally complex-valued: X(ω) = |X(ω)|·e^(j∠X(ω)) where |X(ω)| is the magnitude spectrum and ∠X(ω) is the phase spectrum.</p>
+      </div>
+
+      <div class="info-box">
+        <span class="info-icon">💡</span>
+        <p><strong>Intuition:</strong> The Fourier Transform is like a "frequency microscope." It tells you: out of all possible sinusoids (at every frequency), how much of each frequency is present in your signal x(t)? The answer for each ω is X(ω).</p>
+      </div>
+
+      <!-- ── 3. FT Properties ───────────────────────────── -->
+      <div class="section-heading">
+        <h2>3. Key Fourier Transform Properties</h2>
+        <span class="tag">Exam Essentials</span>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Property</th><th>Time Domain</th><th>Frequency Domain</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Linearity</strong></td><td>ax(t) + by(t)</td><td>aX(ω) + bY(ω)</td></tr>
+          <tr><td><strong>Time Shift</strong></td><td>x(t − t₀)</td><td>e^(−jωt₀) · X(ω)</td></tr>
+          <tr><td><strong>Freq Shift</strong></td><td>e^(jω₀t) · x(t)</td><td>X(ω − ω₀)</td></tr>
+          <tr><td><strong>Time Scaling</strong></td><td>x(at)</td><td>(1/|a|) · X(ω/a)</td></tr>
+          <tr><td><strong>Time Reversal</strong></td><td>x(−t)</td><td>X(−ω) = X*(ω)*</td></tr>
+          <tr><td><strong>Convolution</strong></td><td>x(t) * h(t)</td><td>X(ω) · H(ω)</td></tr>
+          <tr><td><strong>Multiplication</strong></td><td>x(t) · y(t)</td><td>(1/2π) X(ω) * Y(ω)</td></tr>
+          <tr><td><strong>Differentiation</strong></td><td>dx(t)/dt</td><td>jω · X(ω)</td></tr>
+          <tr><td><strong>Parseval's Theorem</strong></td><td>∫|x(t)|²dt</td><td>(1/2π)∫|X(ω)|²dω</td></tr>
+        </tbody>
+      </table>
+
+      <div class="card accent-warn">
+        <h3>⚠️ The Convolution-Multiplication Duality</h3>
+        <p>This is arguably the most important FT property for engineers: <strong>convolution in the time domain becomes multiplication in the frequency domain</strong>. This is why we use Fourier Transforms to analyze LTI systems — instead of computing a convolution integral (hard), we just multiply spectra (easy).</p>
+        <div class="math-block" data-label="LTI System in Frequency Domain">
+y(t) = x(t) * h(t)   ←→   Y(ω) = X(ω) · H(ω)
+
+H(ω) = Y(ω)/X(ω)  is the Transfer Function (Frequency Response)
+        </div>
+      </div>
+
+      <!-- ── 4. FT Worked Examples ───────────────────────── -->
+      <div class="section-heading">
+        <h2>4. Worked Examples — Continuous FT</h2>
+        <span class="tag">Calculation</span>
+      </div>
+
+      <div class="card">
+        <h3>📘 Example 1: FT of a Rectangular Pulse</h3>
+        <p>Find the Fourier Transform of x(t) = rect(t/τ) — a rectangle of width τ centered at t=0.</p>
+        <div class="math-block" data-label="Setup">
+x(t) = { 1,  |t| ≤ τ/2
+        { 0,  |t| > τ/2
+        </div>
+        <div class="math-block" data-label="Solution — Apply FT Definition">
+X(ω) = ∫₋τ/2^(τ/2) 1 · e^(−jωt) dt
+      = [e^(−jωt)/(−jω)]₋τ/2^(τ/2)
+      = (e^(−jωτ/2) − e^(jωτ/2)) / (−jω)
+      = (2 sin(ωτ/2)) / ω
+      = τ · sinc(ωτ/2π)    [using sinc(x) = sin(πx)/(πx)]
+        </div>
+        <div class="info-box">
+          <span class="info-icon">💡</span>
+          <p><strong>Key insight:</strong> A rectangular pulse in time ↔ a sinc function in frequency. A wider pulse (larger τ) → a narrower sinc (less bandwidth). This is the time-bandwidth product uncertainty principle.</p>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📘 Example 2: FT of the Unit Impulse</h3>
+        <div class="math-block" data-label="Derivation">
+x(t) = δ(t)
+
+X(ω) = ∫₋∞^∞ δ(t) · e^(−jωt) dt
+      = e^(−jω·0)   [by the sifting property]
+      = 1
+
+∴ ℱ{δ(t)} = 1
+
+Interpretation: The impulse contains ALL frequencies equally.
+An impulse in time → a flat (constant) spectrum.
+        </div>
+        <p>This is why the impulse response h(t) of an LTI system fully characterizes it — its FT H(ω) reveals the system's entire frequency response.</p>
+      </div>
+
+      <!-- ── 5. DFT ──────────────────────────────────────── -->
+      <div class="section-heading">
+        <h2>5. Discrete Fourier Transform (DFT)</h2>
+        <span class="tag">Digital Processing</span>
+      </div>
+
+      <div class="card">
+        <h3>From Continuous to Discrete</h3>
+        <p>In practice, signals are finite-length discrete-time sequences (stored in memory). The DFT operates on a block of N samples and produces N complex frequency coefficients. It is the computational engine behind all digital signal processing.</p>
+      </div>
+
+      <div class="card accent-gold">
+        <h3>⭐ DFT Definition</h3>
+        <div class="math-block" data-label="N-point DFT">
+X(k) = Σₙ₌₀^(N−1)  x(n) · e^(−j2πkn/N)     k = 0, 1, ..., N−1
+
+Compact notation: X(k) = Σₙ₌₀^(N−1) x(n) · Wₙ^(kn)
+
+Where the twiddle factor:  Wₙ = e^(−j2π/N)
+        </div>
+        <div class="math-block" data-label="Inverse DFT (IDFT)">
+x(n) = (1/N) · Σₖ₌₀^(N−1) X(k) · e^(j2πkn/N)     n = 0, 1, ..., N−1
+        </div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-icon">💡</span>
+        <p><strong>Key point:</strong> The DFT is periodic with period N. X(k) represents the signal's content at frequency f = k·(fs/N). The frequency resolution is fs/N — to get finer frequency resolution, either increase N (use more samples) or decrease fs.</p>
+      </div>
+
+      <!-- DFT twiddle factor explanation -->
+      <div class="card">
+        <h3>Understanding the Twiddle Factor W<sub>N</sub></h3>
+        <p>The twiddle factor <span class="math-inline">W_N = e^(−j2π/N)</span> is a complex number on the unit circle. Its powers trace out N equally-spaced points on the unit circle:</p>
+        <div class="diagram-container" style="padding:16px;">
+          <svg viewBox="0 0 280 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <!-- Unit circle -->
+            <circle cx="140" cy="100" r="70" fill="none" stroke="rgba(64,145,108,0.3)" stroke-width="1.5" stroke-dasharray="4,3"/>
+            <!-- Axes -->
+            <line x1="60" y1="100" x2="220" y2="100" stroke="#526e62" stroke-width="1"/>
+            <line x1="140" y1="20" x2="140" y2="180" stroke="#526e62" stroke-width="1"/>
+            <!-- N=8 twiddle factors -->
+            <!-- W^0 = 1 → (210,100) -->
+            <circle cx="210" cy="100" r="5" fill="#D4A843"/>
+            <text x="216" y="104" font-size="9" fill="#D4A843" font-family="Space Mono">W⁰</text>
+            <!-- W^1 -->
+            <circle cx="189" cy="51" r="5" fill="#40916C"/>
+            <text x="194" y="50" font-size="9" fill="#40916C" font-family="Space Mono">W¹</text>
+            <!-- W^2 -->
+            <circle cx="140" cy="30" r="5" fill="#40916C"/>
+            <text x="145" y="28" font-size="9" fill="#40916C" font-family="Space Mono">W²</text>
+            <!-- W^3 -->
+            <circle cx="91" cy="51" r="5" fill="#40916C"/>
+            <text x="62" y="50" font-size="9" fill="#40916C" font-family="Space Mono">W³</text>
+            <!-- W^4 -->
+            <circle cx="70" cy="100" r="5" fill="#40916C"/>
+            <text x="42" y="104" font-size="9" fill="#40916C" font-family="Space Mono">W⁴</text>
+            <!-- W^5 -->
+            <circle cx="91" cy="149" r="5" fill="#40916C"/>
+            <text x="62" y="155" font-size="9" fill="#40916C" font-family="Space Mono">W⁵</text>
+            <!-- W^6 -->
+            <circle cx="140" cy="170" r="5" fill="#40916C"/>
+            <text x="145" y="182" font-size="9" fill="#40916C" font-family="Space Mono">W⁶</text>
+            <!-- W^7 -->
+            <circle cx="189" cy="149" r="5" fill="#40916C"/>
+            <text x="194" y="158" font-size="9" fill="#40916C" font-family="Space Mono">W⁷</text>
+            <!-- Radial lines -->
+            <line x1="140" y1="100" x2="210" y2="100" stroke="rgba(212,168,67,0.6)" stroke-width="1.5"/>
+            <line x1="140" y1="100" x2="189" y2="51" stroke="rgba(64,145,108,0.4)" stroke-width="1"/>
+            <line x1="140" y1="100" x2="140" y2="30" stroke="rgba(64,145,108,0.4)" stroke-width="1"/>
+            <line x1="140" y1="100" x2="91" y2="51" stroke="rgba(64,145,108,0.4)" stroke-width="1"/>
+            <text x="130" y="97" font-size="9" fill="#526e62" font-family="DM Sans">0</text>
+            <text x="120" y="190" font-size="9" fill="#8ba89a" font-family="DM Sans">N=8 twiddle factors on unit circle</text>
+          </svg>
+        </div>
+      </div>
+
+      <!-- ── 6. DFT Worked Examples ─────────────────────── -->
+      <div class="section-heading">
+        <h2>6. DFT Worked Examples</h2>
+        <span class="tag">Calculation</span>
+      </div>
+
+      <div class="card">
+        <h3>📘 Example: 4-point DFT of x(n) = {1, −1, 2, −2}</h3>
+        <p>N = 4. Compute X(k) for k = 0, 1, 2, 3 using X(k) = Σₙ₌₀³ x(n)·e^(−j2πkn/4)</p>
+        <div class="math-block" data-label="k=0 (DC Component)">
+X(0) = x(0)·W₄⁰ + x(1)·W₄⁰ + x(2)·W₄⁰ + x(3)·W₄⁰
+     = 1(1) + (−1)(1) + 2(1) + (−2)(1)
+     = 1 − 1 + 2 − 2 = 0
+        </div>
+        <div class="math-block" data-label="k=1">
+W₄ = e^(−j2π/4) = e^(−jπ/2) = −j
+
+X(1) = x(0)·1 + x(1)·W₄¹ + x(2)·W₄² + x(3)·W₄³
+     = 1(1) + (−1)(−j) + 2(−1) + (−2)(j)
+     = 1 + j − 2 − 2j = −1 − j
+        </div>
+        <div class="math-block" data-label="k=2">
+W₄² = e^(−jπ) = −1
+
+X(2) = x(0)·1 + x(1)·(−1) + x(2)·1 + x(3)·(−1)
+     = 1 + 1 + 2 + 2 = 6
+        </div>
+        <div class="math-block" data-label="k=3">
+W₄³ = e^(−j3π/2) = j
+
+X(3) = x(0)·1 + x(1)·j + x(2)·(−1) + x(3)·(−j)
+     = 1 + (−1)(j) + 2(−1) + (−2)(−j)
+     = 1 − j − 2 + 2j = −1 + j
+
+Result: X(k) = {0, −1−j, 6, −1+j}
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📘 Example: 4-point IDFT of X(k) = {4, 2, 0, 4}</h3>
+        <div class="math-block" data-label="IDFT Formula">
+x(n) = (1/4) Σₖ₌₀³ X(k) · e^(j2πkn/4)
+
+n=0: x(0) = (1/4)[4(1) + 2(1) + 0(1) + 4(1)] = (1/4)(10) = 2.5
+n=1: x(1) = (1/4)[4 + 2j + 0 + 4(j)] = (1/4)[4 + 6j] 
+          = 1 + 1.5j  ← Note: real sequences have conjugate-symmetric DFTs
+n=2: x(2) = (1/4)[4 + 2(−1) + 0 + 4(1)] = (1/4)(6) = 1.5
+n=3: x(3) = (1/4)[4 + 2(−j) + 0 + 4(−j)] = (1/4)[4 − 6j]
+          = 1 − 1.5j
+
+Note: If X(k) doesn't satisfy conjugate symmetry, x(n) will be complex.
+        </div>
+      </div>
+
+      <!-- ── 7. Key DFT Properties ──────────────────────── -->
+      <div class="section-heading">
+        <h2>7. Key DFT Properties</h2>
+        <span class="tag">Reference</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Periodicity</h3>
+          <p>Both x(n) and X(k) are periodic with period N:</p>
+          <div class="math-block" data-label="">
+X(k+N) = X(k)
+x(n+N) = x(n)
+          </div>
+        </div>
+        <div class="card">
+          <h3>Symmetry (Real x(n))</h3>
+          <p>If x(n) is a real sequence, the DFT is conjugate symmetric:</p>
+          <div class="math-block" data-label="">
+X(N−k) = X*(k)
+|X(N−k)| = |X(k)|
+∠X(N−k) = −∠X(k)
+          </div>
+        </div>
+        <div class="card">
+          <h3>Circular Convolution</h3>
+          <p>DFT multiplication in frequency ↔ <em>circular</em> convolution in time:</p>
+          <div class="math-block" data-label="">
+x(n) ⊛ h(n) ↔ X(k)·H(k)
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">This differs from linear convolution. Zero-padding the sequences before DFT converts circular to linear convolution.</p>
+        </div>
+        <div class="card">
+          <h3>Energy (Parseval's)</h3>
+          <div class="math-block" data-label="Parseval for DFT">
+Σₙ₌₀^(N−1) |x(n)|² = (1/N) Σₖ₌₀^(N−1) |X(k)|²
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">Total energy computed in time domain equals (scaled) total energy computed from DFT coefficients.</p>
+        </div>
+      </div>
+
+      <div class="card accent-teal">
+        <h3>Frequency Resolution of the DFT</h3>
+        <div class="math-block" data-label="Frequency Resolution">
+Δf = fs / N
+
+Where:
+  fs = sampling frequency
+  N  = number of DFT points (block length)
+  k-th DFT bin → frequency fₖ = k · (fs/N)
+
+To improve frequency resolution:
+  → Increase N (use more samples / zero-pad)
+  → Or decrease fs (sample more slowly — but watch aliasing!)
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           QUIZ
+      ════════════════════════════════════════════════ -->
+      <div class="quiz-wrapper" id="quiz">
+        <div class="quiz-header">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-header-text">
+            <h2>Module 03 Quiz</h2>
+            <p>10 questions · Instant feedback · Detailed explanations</p>
+          </div>
+        </div>
+
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill"></div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 01 / 10</div>
+          <div class="q-text">The Fourier Transform X(ω) of a continuous-time signal x(t) is defined as:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> X(ω) = (1/2π)∫x(t)·e^(jωt) dt</button>
+            <button class="q-option"><span class="opt-letter">B</span> X(ω) = ∫x(t)·e^(−jωt) dt (from −∞ to ∞)</button>
+            <button class="q-option"><span class="opt-letter">C</span> X(ω) = Σ x(n)·e^(−jωn)</button>
+            <button class="q-option"><span class="opt-letter">D</span> X(ω) = ∫x(t)·e^(jωt) dt (from −∞ to ∞)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> The forward Fourier Transform (analysis equation) is X(ω) = ∫₋∞^∞ x(t)·e^(−jωt) dt. The negative sign in the exponent is the convention for the forward transform. 
+            <br/>• A has the wrong sign (positive exponent) and an extra 1/2π factor — that's part of the inverse transform convention in some formulations. 
+            <br/>• C is the DTFT (discrete-time), not continuous. 
+            <br/>• D has the wrong sign — positive exponent is for the inverse transform.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 02 / 10</div>
+          <div class="q-text">Convolution in the time domain corresponds to what operation in the frequency domain?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Multiplication</button>
+            <button class="q-option"><span class="opt-letter">B</span> Addition</button>
+            <button class="q-option"><span class="opt-letter">C</span> Convolution again</button>
+            <button class="q-option"><span class="opt-letter">D</span> Division</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> This is the Convolution Theorem — one of the most powerful results in signal processing: x(t)*h(t) ↔ X(ω)·H(ω). It converts the computationally expensive convolution integral into simple pointwise multiplication. This is why filtering is implemented via FFT in practice. 
+            <br/>• B: Addition in time → addition in frequency (linearity), but convolution → multiplication. 
+            <br/>• C and D are incorrect — convolution does not remain convolution in the frequency domain.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 03 / 10</div>
+          <div class="q-text">The Fourier Transform of the unit impulse δ(t) is:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> δ(ω)</button>
+            <button class="q-option"><span class="opt-letter">B</span> jω</button>
+            <button class="q-option"><span class="opt-letter">C</span> 1 (constant for all ω)</button>
+            <button class="q-option"><span class="opt-letter">D</span> e^(−jω)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> ℱ{δ(t)} = ∫δ(t)·e^(−jωt)dt = e^(−jω·0) = 1. The impulse has a flat, uniform spectrum containing all frequencies with equal amplitude. This is why "impulsive" events (explosions, lightning) create broadband noise. 
+            <br/>• A (δ(ω)) is the FT of a constant x(t)=1, which is the dual relationship. 
+            <br/>• B (jω) is the FT of the derivative operator. 
+            <br/>• D is the FT of δ(t−1), a time-shifted impulse.
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 04 / 10</div>
+          <div class="q-text">The N-point DFT of a sequence x(n) is defined by X(k) = ?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> (1/N) Σₙ x(n) · e^(j2πkn/N)</button>
+            <button class="q-option"><span class="opt-letter">B</span> Σₙ x(n) · e^(j2πkn/N)</button>
+            <button class="q-option"><span class="opt-letter">C</span> (1/N) Σₙ x(n) · e^(−j2πkn/N)</button>
+            <button class="q-option"><span class="opt-letter">D</span> Σₙ x(n) · e^(−j2πkn/N)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> The DFT forward transform is X(k) = Σₙ₌₀^(N−1) x(n)·e^(−j2πkn/N). The (1/N) factor belongs to the INVERSE DFT. The negative sign in the exponent belongs to the forward (analysis) transform. 
+            <br/>• A has the wrong sign (positive → inverse) AND the 1/N factor (inverse). 
+            <br/>• B has the correct factor (no 1/N) but wrong sign. 
+            <br/>• C has the correct sign but the 1/N factor — that's closer to the inverse DFT form.
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 05 / 10</div>
+          <div class="q-text">The twiddle factor W<sub>N</sub> used in the DFT is equal to:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> e^(j2π/N)</button>
+            <button class="q-option"><span class="opt-letter">B</span> e^(−j2π/N)</button>
+            <button class="q-option"><span class="opt-letter">C</span> e^(jπ/N)</button>
+            <button class="q-option"><span class="opt-letter">D</span> cos(2π/N)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> W_N = e^(−j2π/N). This places it on the unit circle in the complex plane, rotating clockwise by 2π/N radians per increment. Its powers W_N^(kn) trace out N equally-spaced complex exponentials that form the DFT basis functions. 
+            <br/>• A has the positive sign — that would be the inverse DFT twiddle factor W_N*. 
+            <br/>• C has the wrong angle (π instead of 2π). 
+            <br/>• D is only the real part — it ignores the imaginary component.
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 06 / 10</div>
+          <div class="q-text">A time shift of t₀ in a signal x(t) → x(t−t₀) corresponds to what change in the Fourier Transform X(ω)?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> X(ω − ω₀) — a frequency shift</button>
+            <button class="q-option"><span class="opt-letter">B</span> X(ω) / t₀</button>
+            <button class="q-option"><span class="opt-letter">C</span> e^(−jωt₀) · X(ω) — magnitude unchanged, phase rotated</button>
+            <button class="q-option"><span class="opt-letter">D</span> X*(ω) — complex conjugate</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> Time shifting multiplies the spectrum by a complex exponential e^(−jωt₀). Critically, this multiplier has magnitude 1 for all ω — so the magnitude spectrum |X(ω)| is unchanged. Only the phase is affected: ∠X(ω) decreases by ωt₀ radians. This makes sense: shifting a signal in time shouldn't change "how much" of each frequency is present. 
+            <br/>• A is frequency shifting (modulation theorem). 
+            <br/>• B has no basis. 
+            <br/>• D is the time-reversal property.
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 07 / 10</div>
+          <div class="q-text">Parseval's theorem for the DFT states that:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Total signal energy in time = (1/N) × total energy in frequency domain</button>
+            <button class="q-option"><span class="opt-letter">B</span> x(n) and X(k) must both be real</button>
+            <button class="q-option"><span class="opt-letter">C</span> The DFT is always periodic with period 2N</button>
+            <button class="q-option"><span class="opt-letter">D</span> The DFT of a real signal has a symmetric magnitude</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> Parseval's theorem: Σ|x(n)|² = (1/N)Σ|X(k)|². Energy is conserved between domains (with the 1/N normalization factor). This is fundamental to spectral analysis — power computed in time must equal power computed from the spectrum. 
+            <br/>• B is false — X(k) is generally complex even if x(n) is real. 
+            <br/>• C is false — DFT is periodic with period N, not 2N. 
+            <br/>• D is the symmetry property for real signals, not Parseval's.
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 08 / 10</div>
+          <div class="q-text">To improve the frequency resolution of a DFT, one should:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Increase the sampling frequency fs</button>
+            <button class="q-option"><span class="opt-letter">B</span> Decrease the number of DFT points N</button>
+            <button class="q-option"><span class="opt-letter">C</span> Apply a time-reversal to the input</button>
+            <button class="q-option"><span class="opt-letter">D</span> Increase N (take more samples or zero-pad)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> Frequency resolution Δf = fs/N. To make Δf smaller (finer resolution), increase N. You can do this by: (1) recording more data samples, or (2) zero-padding the existing samples. 
+            <br/>• A: Increasing fs widens the frequency range covered, but actually worsens resolution (Δf = fs/N increases if fs increases with fixed N). 
+            <br/>• B: Decreasing N worsens resolution (fewer, wider bins). 
+            <br/>• C: Time reversal doesn't affect frequency resolution.
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 09 / 10</div>
+          <div class="q-text">Compute X(0) (the DC component) of the 4-point DFT of x(n) = {1, 2, 3, 4}.</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> 1</button>
+            <button class="q-option"><span class="opt-letter">B</span> 10</button>
+            <button class="q-option"><span class="opt-letter">C</span> 4</button>
+            <button class="q-option"><span class="opt-letter">D</span> 2.5</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> X(0) = Σₙ₌₀^(N−1) x(n)·e^0 = Σ x(n) · 1 = 1+2+3+4 = 10. The DC component (k=0) is always the sum of all samples, because e^0 = 1. 
+            <br/>• A is just x(0). 
+            <br/>• C is x(3) or N. 
+            <br/>• D = X(0)/N = 10/4 = 2.5 — this would be the mean (average), not the DFT DC term.
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 10 / 10</div>
+          <div class="q-text">The main difference between the Continuous Fourier Transform (CFT) and the Discrete Fourier Transform (DFT) is:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> The CFT uses sine waves; the DFT uses cosine waves</button>
+            <button class="q-option"><span class="opt-letter">B</span> The CFT is only valid for periodic signals; DFT works for aperiodic signals</button>
+            <button class="q-option"><span class="opt-letter">C</span> The CFT operates on continuous-time signals; the DFT operates on finite-length discrete-time sequences and produces a finite discrete spectrum</button>
+            <button class="q-option"><span class="opt-letter">D</span> The DFT requires the Nyquist theorem; the CFT does not</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> The CFT handles continuous-time, infinite-duration signals and produces a continuous frequency spectrum X(ω). The DFT handles finite-length, discrete-time sequences x(n) (N samples) and produces exactly N discrete frequency coefficients X(k). The DFT is computationally tractable and implemented efficiently via the FFT algorithm. 
+            <br/>• A is false — both use complex exponentials (Euler's formula), combining both sine and cosine. 
+            <br/>• B is backwards — the Fourier Series handles periodic signals; the CFT extends this to aperiodic signals by letting T→∞. 
+            <br/>• D: Both are related to Nyquist when considering sampling — the distinction isn't about the Nyquist theorem.
+          </div>
+        </div>
+
+        <!-- Score Card -->
+        <div class="quiz-score-card">
+          <div class="score-circle"><span class="score-num">—</span></div>
+          <h3>Quiz Complete!</h3>
+          <p class="grade-label" style="font-size:1rem; color: var(--gold); margin: 8px 0;"></p>
+          <p>Review the explanations above for any questions you got wrong, then try again.</p>
+          <button class="btn-retry">↺ Retry Quiz</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="card accent-gold" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">All Modules Done?</p>
+          <h3 style="margin:0;">Check the Formula Sheet for quick revision</h3>
+        </div>
+        <a href="formulas.html" style="display:inline-flex; align-items:center; gap:8px; padding:11px 22px; background:var(--gold); color:#0f1a1c; border-radius:8px; text-decoration:none; font-weight:700; font-size:14px;">Formula Sheet →</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

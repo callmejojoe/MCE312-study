@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L02 — Sampling &amp; Quantisation | MCE 312</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html" class="logo-badge">
+        <div class="logo-icon">〜</div>
+        <div class="logo-text">
+          <span class="course">MCE 312</span>
+          <span class="title">Signals &amp; Systems</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section-label">Modules</div>
+      <a href="l01-intro.html" class="nav-item"><span class="nav-icon">📡</span> L01 — Intro to Signals</a>
+      <a href="l02-sampling.html" class="nav-item active"><span class="nav-icon">🔢</span> L02 — Sampling &amp; Quantisation</a>
+      <a href="l03-fourier.html" class="nav-item"><span class="nav-icon">🌊</span> L03 — Fourier Transforms</a>
+      <div class="nav-section-label">Tools</div>
+      <a href="formulas.html" class="nav-item"><span class="nav-icon">📐</span> Formula Sheet <span class="nav-badge">Quick</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>FUTMINNA · Dept of Mechatronics Engineering<br/><span>Engr. Dr. J. A. Bala</span> · 300 Level</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle">☰</button>
+        <nav class="breadcrumb">
+          <a href="index.html">Dashboard</a>
+          <span class="sep">/</span>
+          <span class="current">L02 — Sampling &amp; Quantisation</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill"><span class="dot"></span>Module 2 of 3</div>
+      </div>
+    </div>
+
+    <div class="page-content fade-in">
+
+      <div class="page-hero">
+        <div class="hero-tag">🔢 Module 02</div>
+        <h1>Sampling &amp; Quantisation</h1>
+        <p class="subtitle">How the analogue world becomes digital — the science of sampling rates, the Nyquist theorem, quantisation noise, and the ADC/DAC pipeline that powers all modern digital systems.</p>
+        <div class="hero-meta">
+          <div class="meta-chip"><span class="icon">📐</span> Nyquist Theorem</div>
+          <div class="meta-chip"><span class="icon">🎛️</span> ADC/DAC</div>
+          <div class="meta-chip"><span class="icon">🧪</span> 10-Q Quiz Below</div>
+        </div>
+      </div>
+
+      <!-- ── 1. Sampling ────────────────────────────────── -->
+      <div class="section-heading">
+        <h2>1. Sampling — The First Step of Digitisation</h2>
+        <span class="tag">Core Concept</span>
+      </div>
+
+      <div class="card">
+        <h3>What Is Sampling?</h3>
+        <p>Sampling is the process of converting a continuous-time (analogue) signal into a discrete-time sequence by recording the signal's amplitude at regular time intervals. The time between samples is the <strong>sampling period T<sub>s</sub></strong>, and the number of samples per second is the <strong>sampling frequency f<sub>s</sub></strong>.</p>
+        <div class="math-block" data-label="Key Relationship">
+Ts = 1 / fs
+
+Where:
+  Ts = Sampling period (seconds)
+  fs = Sampling frequency (Hz = samples/second)
+        </div>
+      </div>
+
+      <div class="info-box">
+        <span class="info-icon">💡</span>
+        <p><strong>Analogy:</strong> Imagine a film camera. It doesn't capture smooth, continuous motion — it captures individual frames (samples) at a fixed rate (fps = samples/second). If you shoot at 24fps and the action is slow, it looks fine. But shoot a fast-spinning fan at 24fps and you might see it spinning backwards — that's aliasing.</p>
+      </div>
+
+      <!-- Sampling SVG diagram -->
+      <div class="diagram-container">
+        <svg viewBox="0 0 560 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Axes -->
+          <line x1="20" y1="110" x2="540" y2="110" stroke="#526e62" stroke-width="1"/>
+          <line x1="20" y1="20" x2="20" y2="120" stroke="#526e62" stroke-width="1"/>
+          <!-- Analogue sine wave -->
+          <path d="M20,75 C50,30 90,30 120,75 C150,120 190,120 220,75 C250,30 290,30 320,75 C350,120 390,120 420,75 C450,30 490,30 520,75"
+                fill="none" stroke="rgba(64,145,108,0.5)" stroke-width="2" stroke-dasharray="5,3"/>
+          <!-- Sample stems and dots -->
+          <line x1="60" y1="110" x2="60" y2="42" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="60" cy="42" r="4" fill="#D4A843"/>
+          <line x1="120" y1="110" x2="120" y2="75" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="120" cy="75" r="4" fill="#D4A843"/>
+          <line x1="180" y1="110" x2="180" y2="108" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="180" cy="108" r="4" fill="#D4A843"/>
+          <line x1="240" y1="110" x2="240" y2="75" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="240" cy="75" r="4" fill="#D4A843"/>
+          <line x1="300" y1="110" x2="300" y2="42" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="300" cy="42" r="4" fill="#D4A843"/>
+          <line x1="360" y1="110" x2="360" y2="75" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="360" cy="75" r="4" fill="#D4A843"/>
+          <line x1="420" y1="110" x2="420" y2="108" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="420" cy="108" r="4" fill="#D4A843"/>
+          <line x1="480" y1="110" x2="480" y2="75" stroke="#D4A843" stroke-width="1.5" stroke-dasharray="2,2"/>
+          <circle cx="480" cy="75" r="4" fill="#D4A843"/>
+          <!-- Labels -->
+          <text x="22" y="135" font-size="9" fill="#8ba89a" font-family="Space Mono">0</text>
+          <text x="525" y="113" font-size="9" fill="#8ba89a" font-family="Space Mono">t</text>
+          <text x="30" y="32" font-size="9" fill="rgba(64,145,108,0.8)" font-family="DM Sans">Analogue x(t)</text>
+          <text x="430" y="32" font-size="9" fill="#D4A843" font-family="DM Sans">Samples x[n]</text>
+          <!-- Ts brace -->
+          <line x1="60" y1="128" x2="120" y2="128" stroke="#526e62" stroke-width="1"/>
+          <line x1="60" y1="124" x2="60" y2="132" stroke="#526e62" stroke-width="1"/>
+          <line x1="120" y1="124" x2="120" y2="132" stroke="#526e62" stroke-width="1"/>
+          <text x="72" y="143" font-size="9" fill="#8ba89a" font-family="Space Mono">Ts</text>
+        </svg>
+        <figcaption>Sampling: the continuous signal (dashed green) is measured at discrete intervals T<sub>s</sub>, producing samples x[n] (gold dots)</figcaption>
+      </div>
+
+      <!-- ── 2. Aliasing ─────────────────────────────────── -->
+      <div class="section-heading">
+        <h2>2. Aliasing — The Sampling Hazard</h2>
+        <span class="tag">Critical Concept</span>
+      </div>
+
+      <div class="card accent-warn">
+        <h3>⚠️ What Is Aliasing?</h3>
+        <p>Aliasing occurs when a signal is sampled at a rate that is <strong>too low</strong> (undersampling). The sampled data becomes ambiguous — it could represent multiple different continuous-time signals. The lower-frequency signal that "impersonates" the true signal is called the <strong>alias</strong>.</p>
+        <p style="margin-top:10px;">Once aliasing occurs, the original signal cannot be perfectly recovered — the information is permanently lost. This is why choosing the correct sampling rate is critical.</p>
+      </div>
+
+      <div class="info-box warn">
+        <span class="info-icon">🎬</span>
+        <p><strong>Real-world example:</strong> A car wheel spinning at 600 RPM filmed at 24fps may appear to spin slowly backwards. The camera is "under-sampling" the rotation, so the wheel's true frequency aliases to a lower apparent frequency.</p>
+      </div>
+
+      <!-- ── 3. Nyquist Sampling Theorem ────────────────── -->
+      <div class="section-heading">
+        <h2>3. Nyquist-Shannon Sampling Theorem</h2>
+        <span class="tag">⭐ Most Important</span>
+      </div>
+
+      <div class="card accent-gold">
+        <h3>⭐ The Theorem</h3>
+        <p>A continuous-time analogue signal with maximum frequency component <strong>f<sub>max</sub></strong> can be perfectly reconstructed from its samples if and only if the sampling frequency satisfies:</p>
+        <div class="math-block" data-label="Nyquist Criterion">
+fs ≥ 2 · fmax
+
+The minimum sampling rate (2·fmax) is called the NYQUIST RATE.
+The maximum allowable signal frequency (fs/2) is the NYQUIST FREQUENCY.
+        </div>
+        <p style="margin-top:12px;">If <span class="math-inline">fs &lt; 2·fmax</span>, aliasing occurs and the original signal <em>cannot</em> be recovered.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="stat-card">
+          <div class="stat-value">2f<sub style="font-size:0.6em">max</sub></div>
+          <div class="stat-label">Nyquist Rate (minimum fs)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">f<sub style="font-size:0.6em">s</sub>/2</div>
+          <div class="stat-label">Nyquist Frequency (max signal freq)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">44.1<sub style="font-size:0.6em">kHz</sub></div>
+          <div class="stat-label">CD Audio (20kHz × 2 + margin)</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>📘 Worked Example</h3>
+        <p><strong>Problem:</strong> Music contains frequency components up to 20 kHz. What is the minimum sampling frequency to reconstruct the audible content?</p>
+        <div class="math-block" data-label="Solution">
+Given:  fmax = 20 kHz
+Apply:  fs ≥ 2 · fmax
+        fs ≥ 2 × 20,000 Hz
+        fs ≥ 40,000 Hz = 40 kHz
+
+Answer: Minimum sampling rate = 40 kHz
+Note: CD audio uses 44.1 kHz — slightly above minimum
+      for practical filter implementation headroom.
+        </div>
+      </div>
+
+      <!-- ── 4. Quantisation ────────────────────────────── -->
+      <div class="section-heading">
+        <h2>4. Quantisation</h2>
+        <span class="tag">ADC Step 2</span>
+      </div>
+
+      <div class="card">
+        <h3>What Is Quantisation?</h3>
+        <p>After sampling (which handles the <em>time</em> axis), quantisation handles the <em>amplitude</em> axis. A digital system can only store discrete amplitude levels — quantisation maps the continuous amplitude to the nearest available digital level.</p>
+        <p style="margin-top:10px;">With a <strong>W-bit</strong> ADC, there are <span class="math-inline">2<sup>W</sup></span> quantisation levels available.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card accent-teal">
+          <h3>Key Quantisation Formulas</h3>
+          <div class="math-block" data-label="Number of Levels">
+L = 2^W
+
+Where W = ADC word length (bits)
+L = number of quantisation levels
+          </div>
+          <div class="math-block" data-label="Step Size (Δ)">
+Δ = (V_max - V_min) / (L - 1)
+  = Range / (2^W - 1)
+          </div>
+        </div>
+        <div class="card">
+          <h3>📘 Worked Example</h3>
+          <p><strong>Problem:</strong> A 3-bit ADC covers a range of 0 to 2V. Find the step size.</p>
+          <div class="math-block" data-label="Solution">
+W = 3 bits
+L = 2³ = 8 levels
+Range = 2 - 0 = 2 V
+Intervals = L - 1 = 7
+
+Δ = 2 / 7 ≈ 0.286 V
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Quantisation Noise (Error)</h3>
+        <p>Since continuous amplitudes must be rounded to the nearest level, the difference between the true value and the quantised value is <strong>quantisation noise</strong> (also called quantisation error). The maximum error is ±Δ/2.</p>
+        <div class="math-block" data-label="Max Quantisation Error">
+|e_q| ≤ Δ/2
+
+To reduce quantisation noise → increase W (more bits)
+Every additional bit halves the step size and adds ~6 dB of dynamic range.
+        </div>
+      </div>
+
+      <!-- ADC vs DAC pipeline diagram -->
+      <div class="diagram-container">
+        <svg viewBox="0 0 560 90" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="ar" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L0,6 L6,3 z" fill="#40916C"/>
+            </marker>
+          </defs>
+          <!-- Analogue -->
+          <rect x="10" y="25" width="80" height="40" rx="6" fill="rgba(45,106,79,0.15)" stroke="#40916C" stroke-width="1.5"/>
+          <text x="50" y="48" font-size="10" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">Analogue</text>
+          <text x="50" y="60" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">x(t)</text>
+          <!-- Arrow -->
+          <line x1="90" y1="45" x2="128" y2="45" stroke="#40916C" stroke-width="1.5" marker-end="url(#ar)"/>
+          <!-- Sampler -->
+          <rect x="128" y="25" width="90" height="40" rx="6" fill="rgba(212,168,67,0.1)" stroke="#D4A843" stroke-width="1.5"/>
+          <text x="173" y="43" font-size="10" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">Sampler</text>
+          <text x="173" y="57" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">fs ≥ 2fmax</text>
+          <!-- Arrow -->
+          <line x1="218" y1="45" x2="256" y2="45" stroke="#40916C" stroke-width="1.5" marker-end="url(#ar)"/>
+          <!-- Quantiser -->
+          <rect x="256" y="25" width="100" height="40" rx="6" fill="rgba(212,168,67,0.1)" stroke="#D4A843" stroke-width="1.5"/>
+          <text x="306" y="43" font-size="10" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">Quantiser</text>
+          <text x="306" y="57" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">2^W levels</text>
+          <!-- Arrow -->
+          <line x1="356" y1="45" x2="394" y2="45" stroke="#40916C" stroke-width="1.5" marker-end="url(#ar)"/>
+          <!-- Encoder -->
+          <rect x="394" y="25" width="80" height="40" rx="6" fill="rgba(126,179,255,0.1)" stroke="#7eb3ff" stroke-width="1.5"/>
+          <text x="434" y="43" font-size="10" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">Encoder</text>
+          <text x="434" y="57" font-size="9" fill="#8ba89a" font-family="DM Sans" text-anchor="middle">x[n] binary</text>
+          <!-- Arrow -->
+          <line x1="474" y1="45" x2="510" y2="45" stroke="#40916C" stroke-width="1.5" marker-end="url(#ar)"/>
+          <!-- Digital -->
+          <rect x="510" y="25" width="40" height="40" rx="6" fill="rgba(45,106,79,0.15)" stroke="#40916C" stroke-width="1.5"/>
+          <text x="530" y="48" font-size="9" fill="#e8f0ec" font-family="DM Sans" text-anchor="middle" font-weight="600">01010</text>
+          <!-- Labels below -->
+          <text x="173" y="80" font-size="8.5" fill="#526e62" font-family="DM Sans" text-anchor="middle">CT → DT</text>
+          <text x="306" y="80" font-size="8.5" fill="#526e62" font-family="DM Sans" text-anchor="middle">Continuous → Discrete Amp</text>
+          <text x="434" y="80" font-size="8.5" fill="#526e62" font-family="DM Sans" text-anchor="middle">→ Binary</text>
+        </svg>
+        <figcaption>Analogue-to-Digital Conversion (ADC) pipeline: Sampling then Quantisation then Encoding</figcaption>
+      </div>
+
+      <!-- ── 5. Signal Reconstruction ──────────────────── -->
+      <div class="section-heading">
+        <h2>5. Signal Reconstruction (DAC)</h2>
+        <span class="tag">Digital → Analogue</span>
+      </div>
+
+      <div class="card">
+        <h3>Reconstruction via Interpolation</h3>
+        <p>Converting a digital signal back to analogue requires reconstructing a continuous waveform from the discrete samples. This is done via <strong>interpolation</strong>. The simplest method in a DAC is the <strong>Zero-Order Hold (ZOH)</strong>.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card accent-teal">
+          <h3>Zero-Order Hold (ZOH)</h3>
+          <p>The DAC holds each sample value constant until the next sample arrives. The result is a "staircase" approximation of the original signal.</p>
+          <div class="math-block" data-label="ZOH Output">
+x_ZOH(t) = x[n]  for  nTs ≤ t &lt; (n+1)Ts
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">A low-pass filter is applied after the ZOH to smooth out the staircasing effect and recover the original signal.</p>
+        </div>
+        <div class="card">
+          <!-- ZOH diagram -->
+          <h3>ZOH Staircase Output</h3>
+          <div class="diagram-container" style="padding:12px 10px;">
+            <svg viewBox="0 0 200 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <line x1="10" y1="80" x2="195" y2="80" stroke="#526e62" stroke-width="1"/>
+              <line x1="10" y1="10" x2="10" y2="88" stroke="#526e62" stroke-width="1"/>
+              <!-- Original -->
+              <path d="M10,65 C35,35 55,35 80,65 C105,95 125,95 160,65 C175,50 185,42 195,38"
+                    fill="none" stroke="rgba(64,145,108,0.4)" stroke-width="1.5" stroke-dasharray="4,2"/>
+              <!-- ZOH staircase -->
+              <polyline points="10,65 35,65 35,42 60,42 60,30 85,30 85,50 110,50 110,72 135,72 135,65 160,65 160,55 185,55"
+                        fill="none" stroke="#D4A843" stroke-width="2" stroke-linejoin="square"/>
+              <text x="100" y="95" font-size="8" fill="#8ba89a" font-family="Space Mono" text-anchor="middle">t</text>
+            </svg>
+            <figcaption>Gold = ZOH staircase; dashed = original analogue signal</figcaption>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── 6. Resolution and Dynamic Range ───────────── -->
+      <div class="section-heading">
+        <h2>6. Resolution and Dynamic Range</h2>
+        <span class="tag">ADC Performance</span>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Resolution</h3>
+          <p>The smallest change in analogue voltage that the ADC can detect — equal to the step size Δ.</p>
+          <div class="math-block" data-label="Resolution">
+Resolution = Δ = V_range / (2^W - 1)
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">Higher W → smaller Δ → better resolution → less quantisation noise.</p>
+        </div>
+        <div class="card">
+          <h3>Dynamic Range (DR)</h3>
+          <p>The ratio of the largest to the smallest representable signal level, expressed in dB.</p>
+          <div class="math-block" data-label="Dynamic Range">
+DR ≈ 6.02 × W  dB
+
+(Approximately 6 dB per bit)
+
+Examples:
+  8-bit ADC  → ~48 dB DR
+  16-bit ADC → ~96 dB DR
+  24-bit ADC → ~144 dB DR
+          </div>
+        </div>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Bits (W)</th><th>Levels (2<sup>W</sup>)</th><th>Dynamic Range (dB)</th><th>Common Use</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>8</td><td>256</td><td>~48</td><td>Basic audio, old video games</td></tr>
+          <tr><td>12</td><td>4,096</td><td>~72</td><td>Instrumentation, sensors</td></tr>
+          <tr><td>16</td><td>65,536</td><td>~96</td><td>CD audio, high-quality audio</td></tr>
+          <tr><td>24</td><td>16,777,216</td><td>~144</td><td>Professional audio, studio recording</td></tr>
+        </tbody>
+      </table>
+
+      <!-- ═══════════════════════════════════════════════
+           QUIZ
+      ════════════════════════════════════════════════ -->
+      <div class="quiz-wrapper" id="quiz">
+        <div class="quiz-header">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-header-text">
+            <h2>Module 02 Quiz</h2>
+            <p>10 questions · Instant feedback · Detailed explanations</p>
+          </div>
+        </div>
+
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill"></div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 01 / 10</div>
+          <div class="q-text">The Nyquist sampling theorem states that to avoid aliasing, the sampling frequency f<sub>s</sub> must satisfy:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> fs ≥ fmax</button>
+            <button class="q-option"><span class="opt-letter">B</span> fs ≤ 2·fmax</button>
+            <button class="q-option"><span class="opt-letter">C</span> fs ≥ 2·fmax</button>
+            <button class="q-option"><span class="opt-letter">D</span> fs = fmax / 2</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> The Nyquist criterion states fs ≥ 2·fmax. This ensures each frequency component has at least 2 samples per cycle, allowing perfect reconstruction. Sampling at exactly 2·fmax is the Nyquist rate (the theoretical minimum). 
+            <br/>• A (fs ≥ fmax) is insufficient — you'd only have 1 sample per cycle. 
+            <br/>• B incorrectly says fs ≤ 2·fmax, which is the wrong direction. 
+            <br/>• D is below Nyquist and guarantees aliasing.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 02 / 10</div>
+          <div class="q-text">A voice signal has a bandwidth of 0 – 4 kHz. What is the minimum sampling rate that prevents aliasing?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> 4 kHz</button>
+            <button class="q-option"><span class="opt-letter">B</span> 8 kHz</button>
+            <button class="q-option"><span class="opt-letter">C</span> 16 kHz</button>
+            <button class="q-option"><span class="opt-letter">D</span> 2 kHz</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> Applying the Nyquist criterion: fs_min = 2 × fmax = 2 × 4,000 = 8,000 Hz = 8 kHz. This is why telephony systems (G.711) sample voice at 8 kHz. 
+            <br/>• A (4 kHz) equals fmax, giving only 1 sample per cycle — aliasing occurs. 
+            <br/>• C (16 kHz) is above Nyquist — valid but wasteful. 
+            <br/>• D (2 kHz) is below Nyquist — severe aliasing.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 03 / 10</div>
+          <div class="q-text">Aliasing is a phenomenon that occurs when:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> A signal is sampled below the Nyquist rate, causing frequency overlap</button>
+            <button class="q-option"><span class="opt-letter">B</span> The signal amplitude exceeds the ADC range</button>
+            <button class="q-option"><span class="opt-letter">C</span> Quantisation noise is too high</button>
+            <button class="q-option"><span class="opt-letter">D</span> The sampling rate is too high</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> Under-sampling causes high-frequency components to "fold" into the lower frequency range, making them indistinguishable from genuine low-frequency content. This frequency overlap is aliasing. Once it happens, the original signal is irrecoverable. 
+            <br/>• B is clipping/saturation, not aliasing. 
+            <br/>• C is a quantisation issue, separate from sampling. 
+            <br/>• D (oversampling) wastes resources but does NOT cause aliasing.
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 04 / 10</div>
+          <div class="q-text">How many quantisation levels does a 4-bit ADC have?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> 4</button>
+            <button class="q-option"><span class="opt-letter">B</span> 8</button>
+            <button class="q-option"><span class="opt-letter">C</span> 12</button>
+            <button class="q-option"><span class="opt-letter">D</span> 16</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> Levels = 2^W = 2^4 = 16. Each bit doubles the number of levels: 1-bit = 2 levels, 2-bit = 4, 3-bit = 8, 4-bit = 16. 
+            <br/>• A (4) confuses bits with levels — W=4 is the number of bits. 
+            <br/>• B (8) is for a 3-bit ADC. 
+            <br/>• C (12) has no power-of-2 basis for 4 bits.
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 05 / 10</div>
+          <div class="q-text">A 3-bit ADC covers a voltage range of 0 to 7V. What is the step size Δ?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> 0.875 V</button>
+            <button class="q-option"><span class="opt-letter">B</span> 1.0 V</button>
+            <button class="q-option"><span class="opt-letter">C</span> 1.4 V</button>
+            <button class="q-option"><span class="opt-letter">D</span> 7.0 V</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> W=3 → L=2³=8 levels → 7 intervals. Δ = Range/(L−1) = 7/(8−1) = 7/7 = 1.0 V. 
+            <br/>• A (0.875) = 7/8 — incorrectly divides by L rather than (L−1). 
+            <br/>• C (1.4) = 7/5 — incorrect divisor. 
+            <br/>• D (7) is the full range, not the step.
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 06 / 10</div>
+          <div class="q-text">The Zero-Order Hold (ZOH) in a DAC produces which characteristic output waveform?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> A perfect sine wave reconstruction</button>
+            <button class="q-option"><span class="opt-letter">B</span> A linear interpolation between samples</button>
+            <button class="q-option"><span class="opt-letter">C</span> A staircase approximation</button>
+            <button class="q-option"><span class="opt-letter">D</span> An impulse train</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> ZOH holds each sample's amplitude constant until the next sample arrives, producing a step-like staircase output. A reconstruction filter (LPF) is then applied to smooth it. 
+            <br/>• A is the desired final output after filtering, not the raw ZOH output. 
+            <br/>• B describes first-order hold (FOH), which linearly interpolates between samples. 
+            <br/>• D is the sampled signal before reconstruction, not ZOH output.
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 07 / 10</div>
+          <div class="q-text">Approximately how many dB of dynamic range does each bit of ADC resolution add?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> ~6 dB per bit</button>
+            <button class="q-option"><span class="opt-letter">B</span> ~3 dB per bit</button>
+            <button class="q-option"><span class="opt-letter">C</span> ~12 dB per bit</button>
+            <button class="q-option"><span class="opt-letter">D</span> ~10 dB per bit</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> DR ≈ 6.02 × W dB. Each additional bit doubles the number of levels (×2 in amplitude = ×4 in power), and 10·log₁₀(4) ≈ 6.02 dB. A 16-bit ADC has DR ≈ 96 dB; adding one bit gives ≈102 dB. 
+            <br/>• B (3 dB) corresponds to a factor of 2 in power — that's one more level in voltage (×√2), not one bit. 
+            <br/>• C and D do not match the standard formula.
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 08 / 10</div>
+          <div class="q-text">What is the consequence of oversampling (sampling well above the Nyquist rate)?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Aliasing of the signal</button>
+            <button class="q-option"><span class="opt-letter">B</span> Loss of signal information</button>
+            <button class="q-option"><span class="opt-letter">C</span> Increased quantisation noise</button>
+            <button class="q-option"><span class="opt-letter">D</span> More data/storage required but no aliasing; enables simpler anti-aliasing filters</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> Oversampling is safe — it doesn't cause aliasing or information loss. The trade-off is more samples per second → more data to store and process. However, it spreads quantisation noise across a wider band (noise shaping benefit) and allows the use of simpler, cheaper anti-aliasing low-pass filters. 
+            <br/>• A is wrong — aliasing only happens from under-sampling. 
+            <br/>• B is wrong — oversampling preserves all information. 
+            <br/>• C is wrong — more bits reduce quantisation noise, not more samples.
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 09 / 10</div>
+          <div class="q-text">Quantisation noise refers to:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Thermal noise added by the ADC circuitry</button>
+            <button class="q-option"><span class="opt-letter">B</span> The error between the true analogue amplitude and its nearest quantisation level</button>
+            <button class="q-option"><span class="opt-letter">C</span> Noise introduced by the sampling process</button>
+            <button class="q-option"><span class="opt-letter">D</span> Aliased frequency components folding back into the signal band</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> Quantisation noise (error) = actual_value − quantised_value. Its maximum magnitude is ±Δ/2. It is an inevitable consequence of rounding amplitudes to discrete levels. 
+            <br/>• A is thermal (Johnson) noise — a physical hardware noise. 
+            <br/>• C confuses sampling noise with quantisation noise; sampling itself (in the ideal case) introduces no noise. 
+            <br/>• D describes aliasing, which is a time-domain sampling issue.
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 10 / 10</div>
+          <div class="q-text">The Nyquist frequency for a system with a sampling rate of 48 kHz is:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> 96 kHz</button>
+            <button class="q-option"><span class="opt-letter">B</span> 48 kHz</button>
+            <button class="q-option"><span class="opt-letter">C</span> 24 kHz</button>
+            <button class="q-option"><span class="opt-letter">D</span> 12 kHz</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> Nyquist frequency = fs/2 = 48,000/2 = 24,000 Hz = 24 kHz. This is the maximum signal frequency the system can represent without aliasing. Any signal component above 24 kHz would need anti-aliasing filtering before sampling. 
+            <br/>• A (96 kHz = 2×fs) — that's twice the sampling rate, which has no standard name here. 
+            <br/>• B confuses Nyquist frequency with sampling frequency. 
+            <br/>• D (12 kHz = fs/4) has no standard significance.
+          </div>
+        </div>
+
+        <!-- Score Card -->
+        <div class="quiz-score-card">
+          <div class="score-circle"><span class="score-num">—</span></div>
+          <h3>Quiz Complete!</h3>
+          <p class="grade-label" style="font-size:1rem; color: var(--gold); margin: 8px 0;"></p>
+          <p>Review the explanations above for any questions you got wrong, then try again.</p>
+          <button class="btn-retry">↺ Retry Quiz</button>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="card accent-teal" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Up Next</p>
+          <h3 style="margin:0;">L03 — Fourier Transforms</h3>
+        </div>
+        <a href="l03-fourier.html" style="display:inline-flex; align-items:center; gap:8px; padding:11px 22px; background:var(--teal); color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px;">Next Module →</a>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

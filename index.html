@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MCE 312 — Signals &amp; Systems</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html" class="logo-badge">
+        <div class="logo-icon">〜</div>
+        <div class="logo-text">
+          <span class="course">MCE 312</span>
+          <span class="title">Signals &amp; Systems</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a href="index.html" class="nav-item">
+        <span class="nav-icon">🏠</span> Dashboard
+      </a>
+
+      <div class="nav-section-label">Modules</div>
+      <a href="l01-intro.html" class="nav-item">
+        <span class="nav-icon">📡</span> L01 — Intro to Signals
+      </a>
+      <a href="l02-sampling.html" class="nav-item">
+        <span class="nav-icon">🔢</span> L02 — Sampling &amp; Quantisation
+      </a>
+      <a href="l03-fourier.html" class="nav-item">
+        <span class="nav-icon">🌊</span> L03 — Fourier Transforms
+      </a>
+
+      <div class="nav-section-label">Tools</div>
+      <a href="formulas.html" class="nav-item">
+        <span class="nav-icon">📐</span> Formula Sheet
+        <span class="nav-badge">Quick</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>FUTMINNA · Dept of Mechatronics Engineering<br/>
+      <span>Engr. Dr. J. A. Bala</span> · 300 Level</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <!-- Main -->
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+        <nav class="breadcrumb">
+          <span class="current">Dashboard</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill">
+          <span class="dot"></span>
+          3 Modules Available
+        </div>
+      </div>
+    </div>
+
+    <div class="page-content fade-in">
+
+      <!-- Hero -->
+      <div class="page-hero">
+        <div class="hero-tag">📚 Exam Prep Hub</div>
+        <h1>Signals &amp; Systems<br/>Study Portal</h1>
+        <p class="subtitle">A comprehensive, interactive resource built directly from your MCE 312 lecture slides. Each module contains in-depth explanations, diagrams, and a 10-question exam-prep quiz.</p>
+        <div class="hero-meta">
+          <div class="meta-chip"><span class="icon">🏛️</span> FUTMINNA · Mechatronics</div>
+          <div class="meta-chip"><span class="icon">📖</span> 300 Level · 2nd Semester</div>
+          <div class="meta-chip"><span class="icon">🎯</span> 3 Modules · 30 Quiz Questions</div>
+        </div>
+      </div>
+
+      <!-- Stats bar -->
+      <div class="stats-bar">
+        <div class="stats-bar-item">
+          <span class="val">3</span>
+          <span class="lbl">Modules</span>
+        </div>
+        <div class="stats-bar-item">
+          <span class="val">30</span>
+          <span class="lbl">Quiz Questions</span>
+        </div>
+        <div class="stats-bar-item">
+          <span class="val">∞</span>
+          <span class="lbl">Signal Types</span>
+        </div>
+        <div class="stats-bar-item">
+          <span class="val">2f<sub style="font-size:0.7em">max</sub></span>
+          <span class="lbl">Nyquist Rate</span>
+        </div>
+      </div>
+
+      <!-- Modules -->
+      <div class="section-heading">
+        <h2>Study Modules</h2>
+        <span class="tag">Course Content</span>
+      </div>
+
+      <div class="module-grid">
+
+        <a href="l01-intro.html" class="module-card">
+          <div class="module-number">MODULE 01</div>
+          <div class="module-card-icon" style="background:rgba(45,106,79,0.15); color: #40916C;">📡</div>
+          <div>
+            <h3>Introduction to Signals &amp; Systems</h3>
+            <p>Classifications of signals (CT/DT, even/odd, periodic, energy/power), basic signal operations, and system properties including linearity, time-invariance, causality, and stability.</p>
+          </div>
+          <div class="module-card-footer">
+            <span class="topic-count">8 Topics · 10 Quiz Qs</span>
+            <div class="arrow-btn">→</div>
+          </div>
+        </a>
+
+        <a href="l02-sampling.html" class="module-card">
+          <div class="module-number">MODULE 02</div>
+          <div class="module-card-icon" style="background:rgba(212,168,67,0.1); color: var(--gold);">🔢</div>
+          <div>
+            <h3>Sampling &amp; Quantisation</h3>
+            <p>Nyquist sampling theorem, aliasing, quantisation noise, ADC/DAC resolution, dynamic range, zero-order hold, and signal reconstruction via interpolation.</p>
+          </div>
+          <div class="module-card-footer">
+            <span class="topic-count">6 Topics · 10 Quiz Qs</span>
+            <div class="arrow-btn">→</div>
+          </div>
+        </a>
+
+        <a href="l03-fourier.html" class="module-card">
+          <div class="module-number">MODULE 03</div>
+          <div class="module-card-icon" style="background:rgba(80,120,220,0.12); color: #7eb3ff;">🌊</div>
+          <div>
+            <h3>Fourier Transforms</h3>
+            <p>Continuous Fourier Transform derivation, properties, and worked examples. Discrete Fourier Transform (DFT), Inverse DFT, and the analysis of aperiodic signals in the frequency domain.</p>
+          </div>
+          <div class="module-card-footer">
+            <span class="topic-count">7 Topics · 10 Quiz Qs</span>
+            <div class="arrow-btn">→</div>
+          </div>
+        </a>
+
+        <a href="formulas.html" class="module-card">
+          <div class="module-number">REFERENCE</div>
+          <div class="module-card-icon" style="background:rgba(180,80,180,0.1); color: #cc88ff;">📐</div>
+          <div>
+            <h3>Formula Quick-Reference Sheet</h3>
+            <p>All critical equations from all three modules in one page — perfect for last-minute revision before exams. Includes signal definitions, Nyquist, DFT, and key system properties.</p>
+          </div>
+          <div class="module-card-footer">
+            <span class="topic-count">All Formulas</span>
+            <div class="arrow-btn">→</div>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- How to use -->
+      <div class="section-heading" style="margin-top:48px">
+        <h2>How to Use This Portal</h2>
+      </div>
+      <div class="grid-3">
+        <div class="card">
+          <h3>📖 Read &amp; Understand</h3>
+          <p>Each module breaks complex lecture content into digestible sections with intuitive explanations, worked examples, and inline SVG diagrams.</p>
+        </div>
+        <div class="card">
+          <h3>🧪 Test Yourself</h3>
+          <p>Every module ends with a rigorous 10-question MCQ quiz. Instant feedback tells you exactly why each answer is right or wrong.</p>
+        </div>
+        <div class="card">
+          <h3>⚡ Quick Revise</h3>
+          <p>Use the Formula Sheet for a rapid review of all key equations — ideal the night before an exam or during a quick study break.</p>
+        </div>
+      </div>
+
+    </div><!-- end page-content -->
+  </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formula Sheet | MCE 312</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .formula-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .formula-grid { grid-template-columns: 1fr; } }
+    .f-block { margin-bottom: 10px; }
+    .f-block .f-label { font-size: 11px; font-weight: 700; color: var(--gold); text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 6px; }
+    .f-block .f-eq { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--text-primary); background: var(--bg-deep); border-left: 2px solid var(--teal); padding: 10px 14px; border-radius: 0 6px 6px 0; line-height: 1.7; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html" class="logo-badge">
+        <div class="logo-icon">〜</div>
+        <div class="logo-text">
+          <span class="course">MCE 312</span>
+          <span class="title">Signals &amp; Systems</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section-label">Modules</div>
+      <a href="l01-intro.html" class="nav-item"><span class="nav-icon">📡</span> L01 — Intro to Signals</a>
+      <a href="l02-sampling.html" class="nav-item"><span class="nav-icon">🔢</span> L02 — Sampling &amp; Quantisation</a>
+      <a href="l03-fourier.html" class="nav-item"><span class="nav-icon">🌊</span> L03 — Fourier Transforms</a>
+      <div class="nav-section-label">Tools</div>
+      <a href="formulas.html" class="nav-item active"><span class="nav-icon">📐</span> Formula Sheet <span class="nav-badge">Quick</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>FUTMINNA · Dept of Mechatronics Engineering<br/><span>Engr. Dr. J. A. Bala</span> · 300 Level</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle">☰</button>
+        <nav class="breadcrumb">
+          <a href="index.html">Dashboard</a>
+          <span class="sep">/</span>
+          <span class="current">Formula Sheet</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill"><span class="dot"></span>Quick Reference</div>
+      </div>
+    </div>
+
+    <div class="page-content fade-in">
+
+      <div class="page-hero">
+        <div class="hero-tag">📐 Reference</div>
+        <h1>MCE 312 Formula Sheet</h1>
+        <p class="subtitle">All critical equations for Signals &amp; Systems in one place. Bookmark this page for exam day revision.</p>
+        <div class="hero-meta">
+          <div class="meta-chip"><span class="icon">📡</span> Signals &amp; Systems</div>
+          <div class="meta-chip"><span class="icon">🔢</span> Sampling &amp; Quantisation</div>
+          <div class="meta-chip"><span class="icon">🌊</span> Fourier Transforms</div>
+        </div>
+      </div>
+
+      <!-- ── Section 1: Signals ─────────────────────────── -->
+      <div class="section-heading">
+        <h2>📡 Module 1 — Signals &amp; Systems</h2>
+      </div>
+
+      <div class="formula-grid">
+        <div class="card">
+          <h3>Elementary Signals</h3>
+          <div class="f-block">
+            <div class="f-label">Unit Step</div>
+            <div class="f-eq">u(t) = 1 for t≥0,  0 for t&lt;0</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Ramp</div>
+            <div class="f-eq">r(t) = t·u(t)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Sinusoid</div>
+            <div class="f-eq">x(t) = A·sin(ωt + φ),  ω = 2πf</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Impulse Sifting</div>
+            <div class="f-eq">∫x(t)·δ(t−t₀)dt = x(t₀)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Relation</div>
+            <div class="f-eq">δ(t) = d/dt[u(t)]
+u(t) = ∫₋∞ᵗ δ(τ)dτ</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Signal Classifications</h3>
+          <div class="f-block">
+            <div class="f-label">Even Signal</div>
+            <div class="f-eq">x(t) = x(−t)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Odd Signal</div>
+            <div class="f-eq">x(t) = −x(−t)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Periodic</div>
+            <div class="f-eq">x(t) = x(t+T),  f = 1/T</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Energy Signal (E finite)</div>
+            <div class="f-eq">E = ∫₋∞^∞ |x(t)|² dt,  0&lt;E&lt;∞,  P=0</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Power Signal (P finite)</div>
+            <div class="f-eq">P = lim(1/2T)∫₋ᵀᵀ|x(t)|²dt,  0&lt;P&lt;∞,  E=∞</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Time Operations</h3>
+          <div class="f-block">
+            <div class="f-label">Shift Right (Delay)</div>
+            <div class="f-eq">y(t) = x(t − t₀)  [shifts signal right by t₀]</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Shift Left (Advance)</div>
+            <div class="f-eq">y(t) = x(t + t₀)  [shifts signal left by t₀]</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Time Scaling</div>
+            <div class="f-eq">y(t) = x(At)
+|A| &gt; 1 → Compression (faster)
+|A| &lt; 1 → Expansion (slower)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Time Reversal</div>
+            <div class="f-eq">y(t) = x(−t)  [flip about t=0]</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>System Properties</h3>
+          <div class="f-block">
+            <div class="f-label">Linearity (Superposition)</div>
+            <div class="f-eq">ax₁(t)+bx₂(t) → ay₁(t)+by₂(t)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Time Invariance Test</div>
+            <div class="f-eq">x(t−t₀) → y(t−t₀) for all t₀</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Causality</div>
+            <div class="f-eq">y(t) depends only on x(τ) for τ ≤ t</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">BIBO Stability (LTI)</div>
+            <div class="f-eq">∫₋∞^∞ |h(t)| dt &lt; ∞</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">LTI Convolution</div>
+            <div class="f-eq">y(t) = x(t) * h(t) = ∫x(τ)h(t−τ)dτ</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section 2: Sampling ────────────────────────── -->
+      <div class="section-heading" style="margin-top:40px;">
+        <h2>🔢 Module 2 — Sampling &amp; Quantisation</h2>
+      </div>
+
+      <div class="formula-grid">
+        <div class="card">
+          <h3>Sampling</h3>
+          <div class="f-block">
+            <div class="f-label">Sampling Period &amp; Frequency</div>
+            <div class="f-eq">Ts = 1/fs</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Nyquist Criterion (No Aliasing)</div>
+            <div class="f-eq">fs ≥ 2·fmax     (Nyquist Rate = 2·fmax)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Nyquist Frequency</div>
+            <div class="f-eq">fN = fs / 2     (max representable frequency)</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Quantisation</h3>
+          <div class="f-block">
+            <div class="f-label">Number of Levels</div>
+            <div class="f-eq">L = 2^W     (W = word length in bits)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Step Size (Resolution)</div>
+            <div class="f-eq">Δ = V_range / (2^W − 1)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Max Quantisation Error</div>
+            <div class="f-eq">|e_q|_max = Δ/2</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Dynamic Range</div>
+            <div class="f-eq">DR ≈ 6.02 × W  dB     (~6 dB/bit)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Section 3: Fourier ─────────────────────────── -->
+      <div class="section-heading" style="margin-top:40px;">
+        <h2>🌊 Module 3 — Fourier Transforms</h2>
+      </div>
+
+      <div class="formula-grid">
+        <div class="card">
+          <h3>Continuous Fourier Transform</h3>
+          <div class="f-block">
+            <div class="f-label">Forward FT (Analysis)</div>
+            <div class="f-eq">X(ω) = ∫₋∞^∞ x(t)·e^(−jωt) dt</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Inverse FT (Synthesis)</div>
+            <div class="f-eq">x(t) = (1/2π)∫₋∞^∞ X(ω)·e^(jωt) dω</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Frequency Variable</div>
+            <div class="f-eq">ω = 2πf  (rad/s)     f = ω/2π  (Hz)</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Key FT Pairs</h3>
+          <div class="f-block">
+            <div class="f-label">Impulse</div>
+            <div class="f-eq">δ(t)  ↔  1</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Constant</div>
+            <div class="f-eq">1     ↔  2π·δ(ω)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Complex Exponential</div>
+            <div class="f-eq">e^(jω₀t)  ↔  2π·δ(ω−ω₀)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Rect Pulse (width τ)</div>
+            <div class="f-eq">rect(t/τ)  ↔  τ·sinc(ωτ/2π)</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>FT Properties</h3>
+          <div class="f-block">
+            <div class="f-label">Linearity</div>
+            <div class="f-eq">ax(t)+by(t)  ↔  aX(ω)+bY(ω)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Time Shift</div>
+            <div class="f-eq">x(t−t₀)  ↔  e^(−jωt₀)·X(ω)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Frequency Shift</div>
+            <div class="f-eq">e^(jω₀t)·x(t)  ↔  X(ω−ω₀)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Convolution Theorem</div>
+            <div class="f-eq">x(t)*h(t)  ↔  X(ω)·H(ω)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Differentiation</div>
+            <div class="f-eq">dx/dt  ↔  jω·X(ω)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Parseval's Theorem</div>
+            <div class="f-eq">∫|x(t)|²dt = (1/2π)∫|X(ω)|²dω</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Discrete Fourier Transform (DFT)</h3>
+          <div class="f-block">
+            <div class="f-label">Forward DFT (Analysis)</div>
+            <div class="f-eq">X(k) = Σₙ₌₀^(N−1) x(n)·e^(−j2πkn/N)
+     k = 0, 1, ..., N−1</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Inverse DFT (Synthesis)</div>
+            <div class="f-eq">x(n) = (1/N)Σₖ₌₀^(N−1) X(k)·e^(j2πkn/N)
+     n = 0, 1, ..., N−1</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Twiddle Factor</div>
+            <div class="f-eq">W_N = e^(−j2π/N)
+Powers: W_N^0=1, W_N^(N/4)=−j, W_N^(N/2)=−1</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">DC Component</div>
+            <div class="f-eq">X(0) = Σₙ x(n)  (sum of all samples)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Frequency Resolution</div>
+            <div class="f-eq">Δf = fs / N     fₖ = k·(fs/N)</div>
+          </div>
+          <div class="f-block">
+            <div class="f-label">Parseval for DFT</div>
+            <div class="f-eq">Σ|x(n)|² = (1/N)·Σ|X(k)|²</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Quick Tips ─────────────────────────────────── -->
+      <div class="section-heading" style="margin-top:40px;">
+        <h2>⚡ Exam Quick Tips</h2>
+      </div>
+
+      <div class="grid-3">
+        <div class="card accent-teal">
+          <h3>🎯 Test Linearity</h3>
+          <p>Check BOTH: (1) Additivity: x₁+x₂ → y₁+y₂, and (2) Homogeneity: cx → cy. Fail either → nonlinear.</p>
+        </div>
+        <div class="card accent-gold">
+          <h3>⏱ Time Shift Direction</h3>
+          <p>x(t − t₀): shift RIGHT (delay). x(t + t₀): shift LEFT (advance). The sign inside the bracket flips your intuition!</p>
+        </div>
+        <div class="card">
+          <h3>📊 DFT DC Component</h3>
+          <p>X(0) is always the sum of all samples. Quick sanity check for your DFT calculations.</p>
+        </div>
+        <div class="card">
+          <h3>🔄 Nyquist Gotcha</h3>
+          <p>fs ≥ 2·fmax is the MINIMUM. Sampling at exactly 2·fmax is theoretically sufficient but practically risky due to non-ideal filters.</p>
+        </div>
+        <div class="card accent-warn">
+          <h3>⚠️ Causality vs Stability</h3>
+          <p>Causal: h(t)=0 for t&lt;0. Stable: ∫|h(t)|dt&lt;∞. A system can be one without the other!</p>
+        </div>
+        <div class="card">
+          <h3>🌊 FT Sign Convention</h3>
+          <p>Forward FT: e^(−jωt). Inverse FT: e^(+jωt). Memorize: "Forward is Negative, Inverse is Positive."</p>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>

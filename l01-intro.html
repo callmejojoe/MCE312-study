@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>L01 — Introduction to Signals &amp; Systems | MCE 312</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">
+      <a href="index.html" class="logo-badge">
+        <div class="logo-icon">〜</div>
+        <div class="logo-text">
+          <span class="course">MCE 312</span>
+          <span class="title">Signals &amp; Systems</span>
+        </div>
+      </a>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="nav-section-label">Navigation</div>
+      <a href="index.html" class="nav-item"><span class="nav-icon">🏠</span> Dashboard</a>
+      <div class="nav-section-label">Modules</div>
+      <a href="l01-intro.html" class="nav-item active"><span class="nav-icon">📡</span> L01 — Intro to Signals</a>
+      <a href="l02-sampling.html" class="nav-item"><span class="nav-icon">🔢</span> L02 — Sampling &amp; Quantisation</a>
+      <a href="l03-fourier.html" class="nav-item"><span class="nav-icon">🌊</span> L03 — Fourier Transforms</a>
+      <div class="nav-section-label">Tools</div>
+      <a href="formulas.html" class="nav-item"><span class="nav-icon">📐</span> Formula Sheet <span class="nav-badge">Quick</span></a>
+    </nav>
+    <div class="sidebar-footer">
+      <p>FUTMINNA · Dept of Mechatronics Engineering<br/><span>Engr. Dr. J. A. Bala</span> · 300 Level</p>
+    </div>
+  </aside>
+  <div class="sidebar-overlay"></div>
+
+  <main class="main-content">
+    <div class="topbar">
+      <div class="topbar-left">
+        <button class="menu-toggle">☰</button>
+        <nav class="breadcrumb">
+          <a href="index.html">Dashboard</a>
+          <span class="sep">/</span>
+          <span class="current">L01 — Signals &amp; Systems</span>
+        </nav>
+      </div>
+      <div class="topbar-right">
+        <div class="progress-pill"><span class="dot"></span>Module 1 of 3</div>
+      </div>
+    </div>
+
+    <div class="page-content fade-in">
+
+      <div class="page-hero">
+        <div class="hero-tag">📡 Module 01</div>
+        <h1>Introduction to Signals &amp; Systems</h1>
+        <p class="subtitle">The foundational vocabulary of signal processing — what signals and systems are, how we classify them, and the basic mathematical operations we perform on them.</p>
+        <div class="hero-meta">
+          <div class="meta-chip"><span class="icon">🎯</span> 8 Core Topics</div>
+          <div class="meta-chip"><span class="icon">📐</span> Signal Operations</div>
+          <div class="meta-chip"><span class="icon">🧪</span> 10-Q Quiz Below</div>
+        </div>
+      </div>
+
+      <!-- ── 1. What is a Signal ───────────────────────── -->
+      <div class="section-heading">
+        <h2>1. What Is a Signal?</h2>
+        <span class="tag">Core Concept</span>
+      </div>
+
+      <div class="card">
+        <h3>Definition</h3>
+        <p>A <strong>signal</strong> is a function of one or more independent variables that conveys information about a physical phenomenon. Most commonly, signals are functions of <em>time</em>, but they can also be functions of space, frequency, or any other variable of interest.</p>
+        <ul>
+          <li><strong>Voice signal:</strong> air pressure as a function of time.</li>
+          <li><strong>ECG:</strong> electrical heart activity vs. time.</li>
+          <li><strong>Image:</strong> pixel intensity as a function of 2D space.</li>
+          <li><strong>Video:</strong> intensity as a function of both space and time.</li>
+        </ul>
+      </div>
+
+      <div class="info-box">
+        <span class="info-icon">💡</span>
+        <p><strong>Intuition:</strong> Think of a signal as the "data" that carries a message. The signal itself doesn't do anything — it just <em>represents</em> information. Systems are what act on signals.</p>
+      </div>
+
+      <!-- ── 2. Elementary Signals ──────────────────────── -->
+      <div class="section-heading">
+        <h2>2. Elementary (Basic) Signals</h2>
+        <span class="tag">Building Blocks</span>
+      </div>
+
+      <div class="card accent-teal">
+        <h3>Why Elementary Signals Matter</h3>
+        <p>Elementary signals are the "atoms" of signal analysis. Any complex real-world signal can be built from combinations of these. They also act as standard <em>test inputs</em> for characterizing system behavior.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Unit Step Signal — u(t)</h3>
+          <p>Turns ON at t = 0 and stays ON. Used to model switching events.</p>
+          <div class="math-block" data-label="Definition">
+u(t) = { 1,  t ≥ 0
+        { 0,  t &lt; 0
+          </div>
+          <!-- SVG diagram -->
+          <div class="diagram-container" style="padding:16px 12px;">
+            <svg viewBox="0 0 220 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <line x1="10" y1="80" x2="210" y2="80" stroke="#526e62" stroke-width="1"/>
+              <line x1="110" y1="10" x2="110" y2="90" stroke="#526e62" stroke-width="1"/>
+              <line x1="10" y1="80" x2="110" y2="80" stroke="#40916C" stroke-width="2.5"/>
+              <line x1="110" y1="30" x2="210" y2="30" stroke="#40916C" stroke-width="2.5"/>
+              <line x1="110" y1="80" x2="110" y2="30" stroke="#40916C" stroke-width="2.5" stroke-dasharray="4,3"/>
+              <circle cx="110" cy="30" r="3" fill="#D4A843"/>
+              <text x="105" y="95" font-size="9" fill="#8ba89a" font-family="Space Mono">0</text>
+              <text x="195" y="90" font-size="9" fill="#8ba89a" font-family="Space Mono">t</text>
+              <text x="115" y="28" font-size="9" fill="#D4A843" font-family="Space Mono">1</text>
+            </svg>
+            <figcaption>Unit Step u(t)</figcaption>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Unit Impulse Signal — δ(t)</h3>
+          <p>An infinitely narrow, infinitely tall spike at t = 0 with area = 1. It is the derivative of the unit step.</p>
+          <div class="math-block" data-label="Sifting Property">
+∫ x(t)·δ(t−t₀) dt = x(t₀)
+          </div>
+          <div class="diagram-container" style="padding:16px 12px;">
+            <svg viewBox="0 0 220 100" width="100%" xmlns="http://www.w3.org/2000/svg">
+              <line x1="10" y1="80" x2="210" y2="80" stroke="#526e62" stroke-width="1"/>
+              <line x1="110" y1="10" x2="110" y2="90" stroke="#526e62" stroke-width="1"/>
+              <line x1="10" y1="80" x2="210" y2="80" stroke="#40916C" stroke-width="2.5"/>
+              <line x1="110" y1="80" x2="110" y2="18" stroke="#D4A843" stroke-width="3" marker-end="url(#arr)"/>
+              <defs>
+                <marker id="arr" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">
+                  <path d="M0,0 L0,6 L6,3 z" fill="#D4A843"/>
+                </marker>
+              </defs>
+              <text x="100" y="95" font-size="9" fill="#8ba89a" font-family="Space Mono">0</text>
+              <text x="195" y="90" font-size="9" fill="#8ba89a" font-family="Space Mono">t</text>
+              <text x="114" y="22" font-size="9" fill="#D4A843" font-family="Space Mono">δ(t)</text>
+            </svg>
+            <figcaption>Unit Impulse δ(t)</figcaption>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Ramp Signal — r(t)</h3>
+          <div class="math-block" data-label="Definition">
+r(t) = { t,  t ≥ 0
+        { 0,  t &lt; 0
+Note: r(t) = t·u(t)
+Also: u(t) = d/dt[r(t)]
+          </div>
+          <p>The integral of the step function. Models linearly increasing quantities (e.g., constant-velocity motion).</p>
+        </div>
+
+        <div class="card">
+          <h3>Sinusoidal Signal</h3>
+          <div class="math-block" data-label="Definition">
+x(t) = A·sin(ωt + φ)
+
+A = Amplitude
+ω = Angular frequency (rad/s)
+φ = Phase (radians)
+T = 2π/ω = Period
+          </div>
+          <p>The most important signal in engineering. Foundation of Fourier analysis — every periodic signal decomposes into sinusoids.</p>
+        </div>
+      </div>
+
+      <!-- ── 3. Classification of Signals ─────────────── -->
+      <div class="section-heading">
+        <h2>3. Classification of Signals</h2>
+        <span class="tag">Taxonomy</span>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Classification</th>
+            <th>Type A</th>
+            <th>Type B</th>
+            <th>Key Test</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Time domain</td>
+            <td><strong>Continuous-Time (CT)</strong> — defined for all t</td>
+            <td><strong>Discrete-Time (DT)</strong> — defined only at t = nTs</td>
+            <td>Is t continuous or sampled?</td>
+          </tr>
+          <tr>
+            <td>Predictability</td>
+            <td><strong>Deterministic</strong> — fully described by equation</td>
+            <td><strong>Random (Non-deterministic)</strong> — probabilistic</td>
+            <td>Can we write an exact formula?</td>
+          </tr>
+          <tr>
+            <td>Symmetry</td>
+            <td><strong>Even:</strong> x(t) = x(−t)</td>
+            <td><strong>Odd:</strong> x(t) = −x(−t)</td>
+            <td>Mirror about t = 0</td>
+          </tr>
+          <tr>
+            <td>Repetition</td>
+            <td><strong>Periodic:</strong> x(t) = x(t+T) ∀t</td>
+            <td><strong>Aperiodic:</strong> No repeating pattern</td>
+            <td>Does it repeat exactly?</td>
+          </tr>
+          <tr>
+            <td>Energy</td>
+            <td><strong>Energy signal:</strong> 0 &lt; E &lt; ∞, P = 0</td>
+            <td><strong>Power signal:</strong> 0 &lt; P &lt; ∞, E = ∞</td>
+            <td>Compute E and P</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="card accent-gold">
+          <h3>⚡ Energy vs Power Signals</h3>
+          <div class="math-block" data-label="Energy">
+E = ∫₋∞^∞ |x(t)|² dt
+          </div>
+          <div class="math-block" data-label="Power">
+P = lim(T→∞) (1/2T) ∫₋ᵀᵀ |x(t)|² dt
+          </div>
+          <p style="margin-top:10px; font-size:0.88rem; color: var(--text-muted);">A signal cannot be both energy AND power (with non-zero finite values). A periodic signal is always a power signal.</p>
+        </div>
+
+        <div class="card">
+          <h3>Even/Odd Decomposition</h3>
+          <p>Any signal can be split into even and odd parts:</p>
+          <div class="math-block" data-label="Decomposition">
+xₑ(t) = [x(t) + x(−t)] / 2  ← Even part
+xₒ(t) = [x(t) − x(−t)] / 2  ← Odd part
+x(t) = xₑ(t) + xₒ(t)
+          </div>
+          <p style="font-size:0.88rem; color: var(--text-muted); margin-top:8px;">Example: sin(t) is purely odd. cos(t) is purely even.</p>
+        </div>
+      </div>
+
+      <!-- ── 4. Signal Operations ───────────────────────── -->
+      <div class="section-heading">
+        <h2>4. Basic Operations on Signals</h2>
+        <span class="tag">Operations</span>
+      </div>
+
+      <div class="card accent-teal">
+        <h3>The Two Axes: Amplitude and Time</h3>
+        <p>All signal operations modify either the <strong>amplitude</strong> (y-axis) or the <strong>time</strong> (x-axis) of a signal. Understanding this distinction is critical for exam questions.</p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Amplitude Operations</h3>
+          <ul>
+            <li><strong>Scaling:</strong> y(t) = C·x(t) — stretches/compresses vertically</li>
+            <li><strong>Addition:</strong> y(t) = x₁(t) + x₂(t) — add amplitudes point-by-point</li>
+            <li><strong>Multiplication:</strong> y(t) = x₁(t)·x₂(t) — multiply amplitudes point-by-point</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Time Operations</h3>
+          <ul>
+            <li><strong>Shifting:</strong> x(t − t₀) shifts RIGHT by t₀ (delay); x(t + t₀) shifts LEFT (advance)</li>
+            <li><strong>Scaling:</strong> x(At) — if |A|>1: compress; if |A|&lt;1: expand</li>
+            <li><strong>Reversal:</strong> x(−t) — flips signal about the vertical axis</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Time shift SVG illustration -->
+      <div class="diagram-container">
+        <svg viewBox="0 0 560 130" width="100%" xmlns="http://www.w3.org/2000/svg">
+          <!-- Original x(t) -->
+          <text x="10" y="20" font-size="11" fill="#D4A843" font-family="DM Sans, sans-serif" font-weight="600">x(t)</text>
+          <line x1="10" y1="100" x2="170" y2="100" stroke="#526e62" stroke-width="1"/>
+          <line x1="90" y1="40" x2="90" y2="108" stroke="#526e62" stroke-width="1"/>
+          <polyline points="30,100 70,100 90,60 110,100 170,100" fill="none" stroke="#40916C" stroke-width="2.5" stroke-linejoin="round"/>
+          <text x="87" y="114" font-size="8" fill="#8ba89a" font-family="Space Mono">0</text>
+
+          <text x="200" y="68" font-size="18" fill="#526e62">→</text>
+
+          <!-- Shifted x(t-t0) -->
+          <text x="230" y="20" font-size="11" fill="#D4A843" font-family="DM Sans, sans-serif" font-weight="600">x(t − t₀)  [Right Shift]</text>
+          <line x1="230" y1="100" x2="390" y2="100" stroke="#526e62" stroke-width="1"/>
+          <line x1="295" y1="40" x2="295" y2="108" stroke="#526e62" stroke-width="1"/>
+          <polyline points="230,100 260,100 295,100 315,60 335,100 390,100" fill="none" stroke="#D4A843" stroke-width="2.5" stroke-linejoin="round"/>
+          <text x="292" y="114" font-size="8" fill="#8ba89a" font-family="Space Mono">0</text>
+          <text x="312" y="114" font-size="8" fill="#D4A843" font-family="Space Mono">t₀</text>
+          <line x1="308" y1="106" x2="308" y2="100" stroke="#D4A843" stroke-width="1"/>
+
+          <!-- Reversed x(-t) -->
+          <text x="420" y="20" font-size="11" fill="#D4A843" font-family="DM Sans, sans-serif" font-weight="600">x(−t)  [Reversal]</text>
+          <line x1="420" y1="100" x2="555" y2="100" stroke="#526e62" stroke-width="1"/>
+          <line x1="488" y1="40" x2="488" y2="108" stroke="#526e62" stroke-width="1"/>
+          <polyline points="420,100 448,60 468,100 488,100 555,100" fill="none" stroke="#7eb3ff" stroke-width="2.5" stroke-linejoin="round"/>
+          <text x="485" y="114" font-size="8" fill="#8ba89a" font-family="Space Mono">0</text>
+        </svg>
+        <figcaption>Time operations: original signal x(t), time-shifted x(t−t₀), and time-reversed x(−t)</figcaption>
+      </div>
+
+      <!-- ── 5. Systems ─────────────────────────────────── -->
+      <div class="section-heading">
+        <h2>5. What Is a System?</h2>
+        <span class="tag">Systems</span>
+      </div>
+
+      <div class="card">
+        <h3>Definition</h3>
+        <p>A <strong>system</strong> is any process or device that takes an input signal (excitation) and produces an output signal (response). It transforms signals.</p>
+        <div class="diagram-container" style="padding: 16px;">
+          <svg viewBox="0 0 400 70" width="100%" xmlns="http://www.w3.org/2000/svg">
+            <text x="10" y="38" font-size="12" fill="#D4A843" font-family="Space Mono">x(t)</text>
+            <line x1="55" y1="35" x2="100" y2="35" stroke="#40916C" stroke-width="2" marker-end="url(#arr2)"/>
+            <defs>
+              <marker id="arr2" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L6,3 z" fill="#40916C"/>
+              </marker>
+              <marker id="arr3" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+                <path d="M0,0 L0,6 L6,3 z" fill="#40916C"/>
+              </marker>
+            </defs>
+            <rect x="100" y="15" width="200" height="40" rx="8" fill="rgba(45,106,79,0.2)" stroke="#40916C" stroke-width="1.5"/>
+            <text x="200" y="40" font-size="11" fill="#e8f0ec" font-family="DM Sans, sans-serif" text-anchor="middle" font-weight="600">SYSTEM  H{·}</text>
+            <line x1="300" y1="35" x2="350" y2="35" stroke="#40916C" stroke-width="2" marker-end="url(#arr3)"/>
+            <text x="355" y="38" font-size="12" fill="#D4A843" font-family="Space Mono">y(t)</text>
+            <text x="60" y="52" font-size="9" fill="#526e62" font-family="DM Sans">Input/Excitation</text>
+            <text x="310" y="52" font-size="9" fill="#526e62" font-family="DM Sans">Output/Response</text>
+          </svg>
+          <figcaption>Block diagram: A system H{·} maps input x(t) → output y(t)</figcaption>
+        </div>
+      </div>
+
+      <!-- ── 6. System Classification ──────────────────── -->
+      <div class="section-heading">
+        <h2>6. Classification of Systems</h2>
+        <span class="tag">Critical for Exam</span>
+      </div>
+
+      <div class="card accent-gold">
+        <h3>⭐ LTI Systems — The Most Important Class</h3>
+        <p>A <strong>Linear Time-Invariant (LTI)</strong> system is both linear and time-invariant. LTI systems are the foundation of signal processing because they can be fully characterized by their <em>impulse response</em> h(t), and the output is simply the convolution of input with h(t):</p>
+        <div class="math-block" data-label="LTI Convolution">
+y(t) = x(t) * h(t) = ∫₋∞^∞ x(τ)·h(t−τ) dτ
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>Linearity</h3>
+          <p>A system is linear if it satisfies <strong>superposition</strong>:</p>
+          <div class="math-block" data-label="Superposition">
+If x₁ → y₁ and x₂ → y₂, then:
+a·x₁ + b·x₂ → a·y₁ + b·y₂
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">Test: If y = x² → NOT linear (fails homogeneity). If y = 3x → linear.</p>
+        </div>
+        <div class="card">
+          <h3>Time Invariance</h3>
+          <p>Output shifts in time exactly like the input — the system doesn't change with time.</p>
+          <div class="math-block" data-label="TI Test">
+If x(t) → y(t), then:
+x(t − t₀) → y(t − t₀)
+for all t₀
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">Test: Replace t with (t−t₀) in system equation. If result matches y(t−t₀), it's TI.</p>
+        </div>
+        <div class="card">
+          <h3>Causality</h3>
+          <p>A <strong>causal</strong> system's output depends only on <em>present and past</em> inputs — not future inputs. Physically realizable real-time systems must be causal.</p>
+          <div class="math-block" data-label="Check">
+y(t) = x(t) + x(t−1)  ← Causal ✓
+y(t) = x(t) + x(t+1)  ← Non-causal ✗
+          </div>
+        </div>
+        <div class="card">
+          <h3>BIBO Stability</h3>
+          <p>A system is <strong>stable</strong> (Bounded-Input Bounded-Output) if every bounded input produces a bounded output.</p>
+          <div class="math-block" data-label="LTI Stability Condition">
+∫₋∞^∞ |h(t)| dt &lt; ∞   (absolutely integrable)
+          </div>
+          <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">An unstable system: y(t) = e^t·x(t) (unbounded even for x(t)=1).</p>
+        </div>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <h3>Static vs Dynamic</h3>
+          <p><strong>Static (memoryless):</strong> output at time t depends only on input at time t.</p>
+          <p style="margin-top:8px;"><strong>Dynamic:</strong> output depends on past (or future) values — has memory.</p>
+        </div>
+        <div class="card">
+          <h3>Invertible Systems</h3>
+          <p>A system is <strong>invertible</strong> if different inputs always produce different outputs (one-to-one mapping). There exists an inverse system H⁻¹ such that H⁻¹{H{x}} = x.</p>
+        </div>
+        <div class="card">
+          <h3>LTV vs LTI</h3>
+          <p><strong>LTV:</strong> Linear + Time-Variant (coefficients change with time).</p>
+          <p style="margin-top:8px;"><strong>LTI:</strong> Linear + Time-Invariant — the gold standard; analyzed via impulse response and Fourier/Laplace transforms.</p>
+        </div>
+      </div>
+
+      <div class="info-box warn">
+        <span class="info-icon">⚠️</span>
+        <p><strong>Exam Trap:</strong> When testing linearity, always check BOTH additivity (x₁+x₂ → y₁+y₂) AND homogeneity (a·x → a·y). A system like y = |x| passes additivity tests but fails homogeneity for a = −1. Always check both conditions.</p>
+      </div>
+
+      <!-- ═══════════════════════════════════════════════
+           QUIZ
+      ════════════════════════════════════════════════ -->
+      <div class="quiz-wrapper" id="quiz">
+        <div class="quiz-header">
+          <div class="quiz-icon">🧪</div>
+          <div class="quiz-header-text">
+            <h2>Module 01 Quiz</h2>
+            <p>10 questions · Instant feedback · Detailed explanations</p>
+          </div>
+        </div>
+
+        <div class="quiz-progress-bar">
+          <div class="quiz-progress-fill"></div>
+        </div>
+
+        <!-- Q1 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 01 / 10</div>
+          <div class="q-text">Which of the following is the correct mathematical definition of an <strong>even signal</strong>?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> x(t) = −x(−t)</button>
+            <button class="q-option"><span class="opt-letter">B</span> x(t) = x(t + T) for all t</button>
+            <button class="q-option"><span class="opt-letter">C</span> x(t) = x(−t)</button>
+            <button class="q-option"><span class="opt-letter">D</span> x(t) = x(t − t₀)</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> An even signal is symmetric about the vertical axis (t=0), meaning x(t) = x(−t). 
+            <br/>• A describes an <em>odd</em> signal. 
+            <br/>• B describes a <em>periodic</em> signal with period T. 
+            <br/>• D describes a time-shifted signal, not symmetry.
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 02 / 10</div>
+          <div class="q-text">The unit impulse signal δ(t) is best described as the __________ of the unit step signal u(t).</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Integral</button>
+            <button class="q-option"><span class="opt-letter">B</span> Derivative</button>
+            <button class="q-option"><span class="opt-letter">C</span> Inverse</button>
+            <button class="q-option"><span class="opt-letter">D</span> Amplitude-scaled version</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> δ(t) = du(t)/dt. Conversely, u(t) = ∫₋∞ᵗ δ(τ)dτ. The impulse is the "instantaneous transition" captured as a derivative of the step jump at t=0. 
+            <br/>• A is wrong — the integral of δ(t) gives u(t), not the other way around. C and D are mathematically incorrect relationships.
+          </div>
+        </div>
+
+        <!-- Q3 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 03 / 10</div>
+          <div class="q-text">Signal x(t) is shifted to produce y(t) = x(t + 3). This operation represents a:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Right shift (delay) by 3 seconds</button>
+            <button class="q-option"><span class="opt-letter">B</span> Time reversal by 3 seconds</button>
+            <button class="q-option"><span class="opt-letter">C</span> Time compression by factor 3</button>
+            <button class="q-option"><span class="opt-letter">D</span> Left shift (advance) by 3 seconds</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> x(t + t₀) shifts the signal LEFT (advances it) by t₀. Think of it as: the signal reaches any given amplitude value <em>earlier</em> in time. 
+            <br/>• A is wrong — x(t − t₀) gives a right shift (delay). 
+            <br/>• B is x(−t). 
+            <br/>• C is x(3t), not x(t+3).
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 04 / 10</div>
+          <div class="q-text">Which condition must hold for a signal to be classified as <strong>periodic</strong>?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> x(t) = x(t + T) for all t, where T &gt; 0</button>
+            <button class="q-option"><span class="opt-letter">B</span> x(t) = x(−t) for all t</button>
+            <button class="q-option"><span class="opt-letter">C</span> ∫|x(t)|² dt &lt; ∞</button>
+            <button class="q-option"><span class="opt-letter">D</span> x(t) → 0 as t → ∞</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> A periodic signal repeats exactly every T seconds for ALL time — both past and future. T is the fundamental period and 1/T is the fundamental frequency. 
+            <br/>• B is the even signal condition. 
+            <br/>• C is the energy signal condition (finite energy). 
+            <br/>• D describes signals that decay to zero (not periodic).
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 05 / 10</div>
+          <div class="q-text">A system described by y(t) = x²(t) is tested for linearity. What is the correct conclusion?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Linear, because output is directly related to input</button>
+            <button class="q-option"><span class="opt-letter">B</span> Linear, because it satisfies additivity</button>
+            <button class="q-option"><span class="opt-letter">C</span> Non-linear, because it fails the homogeneity test</button>
+            <button class="q-option"><span class="opt-letter">D</span> Non-linear, because it has no inverse</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> Test homogeneity: if x → y=x², then a·x → (ax)² = a²x² ≠ a·x². Since a²x² ≠ a·x² for general a, homogeneity fails, so the system is <em>nonlinear</em>. 
+            <br/>• A and B are incorrect — direct relationship or partial linearity doesn't make a system linear. 
+            <br/>• D is a property of invertibility, not linearity.
+          </div>
+        </div>
+
+        <!-- Q6 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 06 / 10</div>
+          <div class="q-text">A system y(t) = x(t − 2) + x(t + 1) is tested for causality. The correct verdict is:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Causal, because it uses a delay</button>
+            <button class="q-option"><span class="opt-letter">B</span> Non-causal, because it uses x(t+1) — a future input</button>
+            <button class="q-option"><span class="opt-letter">C</span> Causal, because it is time-invariant</button>
+            <button class="q-option"><span class="opt-letter">D</span> Non-causal, because it has two terms</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> x(t+1) means the output at time t depends on the input at time t+1, which is a <em>future</em> value. A causal system may only use present (t) and past (t−τ, τ>0) values. x(t−2) is fine (past), but x(t+1) makes the system non-causal. 
+            <br/>• Time invariance and number of terms are irrelevant to causality.
+          </div>
+        </div>
+
+        <!-- Q7 -->
+        <div class="quiz-question" data-correct="0">
+          <div class="q-number">Question 07 / 10</div>
+          <div class="q-text">For a CT signal, when is it classified as an <strong>energy signal</strong>?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> When 0 &lt; E &lt; ∞ and average power P = 0</button>
+            <button class="q-option"><span class="opt-letter">B</span> When average power P &gt; 0 and energy E = ∞</button>
+            <button class="q-option"><span class="opt-letter">C</span> When both energy and power are finite</button>
+            <button class="q-option"><span class="opt-letter">D</span> When the signal is periodic</button>
+          </div>
+          <div class="q-explanation">
+            <strong>A is correct:</strong> An energy signal has finite, non-zero total energy (E &lt; ∞), and because it "dies out," its time-averaged power is zero. 
+            <br/>• B describes a power signal. 
+            <br/>• C is impossible — if E is finite, P = lim(1/2T)·E → 0 as T→∞; they can't both be nonzero and finite simultaneously. 
+            <br/>• D: Periodic signals are power signals (infinite energy, finite average power).
+          </div>
+        </div>
+
+        <!-- Q8 -->
+        <div class="quiz-question" data-correct="3">
+          <div class="q-number">Question 08 / 10</div>
+          <div class="q-text">Time scaling x(2t) applied to a signal results in:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Expansion of the signal in time by a factor of 2</button>
+            <button class="q-option"><span class="opt-letter">B</span> Shifting of the signal by 2 seconds</button>
+            <button class="q-option"><span class="opt-letter">C</span> Doubling the amplitude of the signal</button>
+            <button class="q-option"><span class="opt-letter">D</span> Compression of the signal in time by a factor of 2</button>
+          </div>
+          <div class="q-explanation">
+            <strong>D is correct:</strong> When |A|>1 in x(At), the signal is <em>compressed</em> in time (it runs faster). x(2t) completes in half the time of x(t). To expand (slow down), use |A|&lt;1, e.g. x(0.5t). 
+            <br/>• A is the opposite — that would be x(0.5t). 
+            <br/>• B is time shifting, not scaling. 
+            <br/>• C: Amplitude is unchanged by time scaling.
+          </div>
+        </div>
+
+        <!-- Q9 -->
+        <div class="quiz-question" data-correct="1">
+          <div class="q-number">Question 09 / 10</div>
+          <div class="q-text">What is the stability condition for an LTI system in terms of its impulse response h(t)?</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> h(t) = 0 for all t &lt; 0</button>
+            <button class="q-option"><span class="opt-letter">B</span> ∫₋∞^∞ |h(t)| dt &lt; ∞ (absolutely integrable)</button>
+            <button class="q-option"><span class="opt-letter">C</span> h(t) is periodic</button>
+            <button class="q-option"><span class="opt-letter">D</span> h(t) &gt; 0 for all t</button>
+          </div>
+          <div class="q-explanation">
+            <strong>B is correct:</strong> BIBO stability for LTI systems requires that the impulse response is absolutely integrable. If this holds, any bounded input |x(t)| ≤ M produces a bounded output |y(t)| ≤ M·∫|h(t)|dt &lt; ∞. 
+            <br/>• A is the causality condition (h(t)=0 for t&lt;0 means causal). 
+            <br/>• C and D have no relation to stability.
+          </div>
+        </div>
+
+        <!-- Q10 -->
+        <div class="quiz-question" data-correct="2">
+          <div class="q-number">Question 10 / 10</div>
+          <div class="q-text">A random noise signal that cannot be described by a mathematical formula is best classified as:</div>
+          <div class="q-options">
+            <button class="q-option"><span class="opt-letter">A</span> Deterministic and periodic</button>
+            <button class="q-option"><span class="opt-letter">B</span> Deterministic and aperiodic</button>
+            <button class="q-option"><span class="opt-letter">C</span> Non-deterministic (random)</button>
+            <button class="q-option"><span class="opt-letter">D</span> Continuous-time and energy signal</button>
+          </div>
+          <div class="q-explanation">
+            <strong>C is correct:</strong> A signal that cannot be described by an exact mathematical formula and has uncertainty in its value is called <em>non-deterministic</em> or <em>random</em>. Such signals are modeled probabilistically using statistics (mean, variance, power spectral density). 
+            <br/>• A and B require a mathematical formula — that's the definition of deterministic. 
+            <br/>• D describes a signal type in the time domain and energy domain, which is independent of determinism.
+          </div>
+        </div>
+
+        <!-- Score Card -->
+        <div class="quiz-score-card">
+          <div class="score-circle">
+            <span class="score-num">—</span>
+          </div>
+          <h3>Quiz Complete!</h3>
+          <p class="grade-label" style="font-size:1rem; color: var(--gold); margin: 8px 0;"></p>
+          <p>Review the explanations above for any questions you got wrong, then try again.</p>
+          <button class="btn-retry">↺ Retry Quiz</button>
+        </div>
+
+      </div><!-- end quiz-wrapper -->
+
+      <!-- Next Module -->
+      <div class="divider"></div>
+      <div class="card accent-teal" style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px;">
+        <div>
+          <p style="font-size:11px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:4px;">Up Next</p>
+          <h3 style="margin:0;">L02 — Sampling &amp; Quantisation</h3>
+        </div>
+        <a href="l02-sampling.html" style="display:inline-flex; align-items:center; gap:8px; padding:11px 22px; background:var(--teal); color:#fff; border-radius:8px; text-decoration:none; font-weight:600; font-size:14px;">Next Module →</a>
+      </div>
+
+    </div><!-- end page-content -->
+  </main>
+</div>
+<script src="main.js"></script>
+</body>
+</html>
